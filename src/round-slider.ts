@@ -32,17 +32,6 @@ const BOUNDS = (() => {
   return { top, left, height: top + bottom, width: left + right };
 })();
 
-function renderArc(start: number, end: number): string {
-  const diff = end - start;
-  const startXY = convertRadiansToCoordinates(start);
-  const endXY = convertRadiansToCoordinates(end + 0.001);
-  return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${diff > Math.PI ? "1" : "0"} 1, ${endXY.x} ${endXY.y}`;
-}
-
-function convertCoordinatesToRadians(x: number, y: number): number {
-  return (Math.atan2(y, x) - START_RADIANS + 8 * Math.PI) % (2 * Math.PI);
-}
-
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
   @property({ type: Number }) public value: number = 0;
@@ -90,6 +79,10 @@ export class RoundSlider extends LitElement {
     );
   }
 
+  private convertCoordinatesToRadians(x: number, y: number): number {
+    return (Math.atan2(y, x) - START_RADIANS + 8 * Math.PI) % (2 * Math.PI);
+  }
+
   private mouseEventToValue(event: TouchEvent | MouseEvent) {
     const [mouseX, mouseY] = event instanceof MouseEvent
       ? [event.clientX, event.clientY]
@@ -98,7 +91,7 @@ export class RoundSlider extends LitElement {
     const rect = this.svg.getBoundingClientRect();
     const x = mouseX - (rect.left + (BOUNDS.left * rect.width) / BOUNDS.width);
     const y = mouseY - (rect.top + (BOUNDS.top * rect.height) / BOUNDS.height);
-    const radians = convertCoordinatesToRadians(x, y);
+    const radians = this.convertCoordinatesToRadians(x, y);
     return this.convertRadiansToValue(radians);
   }
 
@@ -162,6 +155,13 @@ export class RoundSlider extends LitElement {
     this.dispatchEvent(event);
   }
 
+  private renderArc(start: number, end: number): string {
+    const diff = end - start;
+    const startXY = convertRadiansToCoordinates(start);
+    const endXY = convertRadiansToCoordinates(end + 0.001);
+    return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${diff > Math.PI ? "1" : "0"} 1, ${endXY.x} ${endXY.y}`;
+  }
+
   protected render() {
     const theta = this.convertValueToRadians(this.value);
     const handle = convertRadiansToCoordinates(theta);
@@ -177,17 +177,17 @@ export class RoundSlider extends LitElement {
         <g class="slider">
           <path
             class="path"
-            d=${renderArc(START_RADIANS, END_RADIANS)}
+            d=${this.renderArc(START_RADIANS, END_RADIANS)}
             vector-effect="non-scaling-stroke"
           />
           <path
             class="bar"
             vector-effect="non-scaling-stroke"
-            d=${renderArc(this.convertValueToRadians(this.min), this.convertValueToRadians(this.value))}
+            d=${this.renderArc(this.convertValueToRadians(this.min), this.convertValueToRadians(this.value))}
           />
           <path
             class="shadowpath"
-            d=${renderArc(START_RADIANS, END_RADIANS)}
+            d=${this.renderArc(START_RADIANS, END_RADIANS)}
             vector-effect="non-scaling-stroke"
             stroke="rgba(0,0,0,0)"
             stroke-linecap="butt"
