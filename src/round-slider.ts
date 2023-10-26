@@ -15,23 +15,6 @@ const START_DEGREES = 135;
 const START_RADIANS = convertDegreesToRadians(START_DEGREES);
 const END_RADIANS = START_RADIANS + LENGTH_RADIANS;
 
-const BOUNDS = (() => {
-  function isAngleOnArc(degrees: number): boolean {
-    const a = ((START_DEGREES + LENGTH_DEGREES / 2 - degrees + 180 + 360) % 360) - 180;
-    return a < LENGTH_DEGREES / 2 && a > -LENGTH_DEGREES / 2;
-  }
-
-  const arcStart = convertRadiansToCoordinates(START_RADIANS);
-  const arcEnd = convertRadiansToCoordinates(END_RADIANS);
-
-  const top = isAngleOnArc(270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
-  const bottom = isAngleOnArc(90) ? 1 : Math.max(arcStart.y, arcEnd.y);
-  const left = isAngleOnArc(180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
-  const right = isAngleOnArc(0) ? 1 : Math.max(arcStart.x, arcEnd.x);
-
-  return { top, left, height: top + bottom, width: left + right };
-})();
-
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
   @property({ type: Number }) public value: number = 0;
@@ -88,9 +71,10 @@ export class RoundSlider extends LitElement {
       ? [event.clientX, event.clientY]
       : [event.touches[0].clientX, event.touches[0].clientY];
 
+    const bounds = this.getBoundaries();
     const rect = this.svg.getBoundingClientRect();
-    const x = mouseX - (rect.left + (BOUNDS.left * rect.width) / BOUNDS.width);
-    const y = mouseY - (rect.top + (BOUNDS.top * rect.height) / BOUNDS.height);
+    const x = mouseX - (rect.left + (bounds.left * rect.width) / bounds.width);
+    const y = mouseY - (rect.top + (bounds.top * rect.height) / bounds.height);
     const radians = this.convertCoordinatesToRadians(x, y);
     return this.convertRadiansToValue(radians);
   }
@@ -155,6 +139,23 @@ export class RoundSlider extends LitElement {
     this.dispatchEvent(event);
   }
 
+  private isAngleOnArc(degrees: number): boolean {
+    const a = ((START_DEGREES + LENGTH_DEGREES / 2 - degrees + 180 + 360) % 360) - 180;
+    return a < LENGTH_DEGREES / 2 && a > -LENGTH_DEGREES / 2;
+  }
+
+  private getBoundaries() {
+    const arcStart = convertRadiansToCoordinates(START_RADIANS);
+    const arcEnd = convertRadiansToCoordinates(END_RADIANS);
+
+    const top = this.isAngleOnArc(270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
+    const bottom = this.isAngleOnArc(90) ? 1 : Math.max(arcStart.y, arcEnd.y);
+    const left = this.isAngleOnArc(180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
+    const right = this.isAngleOnArc(0) ? 1 : Math.max(arcStart.x, arcEnd.x);
+
+    return { top, left, height: top + bottom, width: left + right };
+  }
+
   private renderArc(start: number, end: number): string {
     const diff = end - start;
     const startXY = convertRadiansToCoordinates(start);
@@ -163,6 +164,8 @@ export class RoundSlider extends LitElement {
   }
 
   protected render() {
+    const bounds = this.getBoundaries();
+
     const theta = this.convertValueToRadians(this.value);
     const handle = convertRadiansToCoordinates(theta);
 
@@ -171,7 +174,7 @@ export class RoundSlider extends LitElement {
         @mousedown=${this.onDragStart}
         @touchstart=${this.onDragStart}
         xmln="http://www.w3.org/2000/svg"
-        viewBox="${-BOUNDS.left} ${-BOUNDS.top} ${BOUNDS.width} ${BOUNDS.height}"
+        viewBox="${-bounds.left} ${-bounds.top} ${bounds.width} ${bounds.height}"
         focusable="false"
       >
         <g class="slider">
