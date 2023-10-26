@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import { customElement, property, state, query } from "lit/decorators.js";
+import { customElement, property, query } from "lit/decorators.js";
 
 function convertDegreesToRadians(degrees: number) {
   return (degrees * Math.PI) / 180;
@@ -19,7 +19,7 @@ export class RoundSlider extends LitElement {
   @property({ type: Number }) public startAngle = 135;
   @property({ type: Number }) public arcLength = 270;
 
-  @state() isDragging = false;
+  private isDragging = false;
 
   @query('svg', true) svg!: SVGElement;
 
@@ -174,6 +174,7 @@ export class RoundSlider extends LitElement {
     const handle = convertRadiansToCoordinates(theta);
 
     const path = this.renderArc(this.startRadians, this.startRadians + this.lengthRadians);
+    const bar = this.renderArc(this.convertValueToRadians(this.min), this.convertValueToRadians(this.value));
 
     return html`
       <svg
@@ -184,16 +185,8 @@ export class RoundSlider extends LitElement {
         focusable="false"
       >
         <g class="slider">
-          <path
-            class="path"
-            d=${path}
-            vector-effect="non-scaling-stroke"
-          />
-          <path
-            class="bar"
-            vector-effect="non-scaling-stroke"
-            d=${this.renderArc(this.convertValueToRadians(this.min), this.convertValueToRadians(this.value))}
-          />
+          <path class="path" d=${path} vector-effect="non-scaling-stroke" />
+          <path class="bar" vector-effect="non-scaling-stroke" d=${bar} />
           <path
             class="shadowpath"
             d=${path}
