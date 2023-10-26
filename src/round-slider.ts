@@ -180,26 +180,19 @@ export class RoundSlider extends LitElement {
       <svg
         @mousedown=${this.onDragStart}
         @touchstart=${this.onDragStart}
-        xmln="http://www.w3.org/2000/svg"
+        xmlns="http://www.w3.org/2000/svg"
         viewBox="${-bounds.left} ${-bounds.top} ${bounds.width} ${bounds.height}"
         focusable="false"
       >
         <g class="slider">
-          <path class="path" d=${path} vector-effect="non-scaling-stroke" />
-          <path class="bar" vector-effect="non-scaling-stroke" d=${bar} />
-          <path
-            class="shadowpath"
-            d=${path}
-            vector-effect="non-scaling-stroke"
-            stroke="rgba(0,0,0,0)"
-            stroke-linecap="butt"
-          />
+          <path class="path" d=${path} />
+          <path class="bar" d=${bar} />
+          <path class="shadowpath" d=${path} />
         </g>
 
         <path
           class="handle"
           d="M ${handle.x} ${handle.y} L ${handle.x + 0.001} ${handle.y + 0.001}"
-          vector-effect="non-scaling-stroke"
           tabindex="0"
           role="slider"
           aria-valuemin=${this.min}
@@ -223,6 +216,10 @@ export class RoundSlider extends LitElement {
       margin: 12px;
     }
 
+    path {
+      vector-effect: non-scaling-stroke;
+    }
+
     .slider {
       fill: none;
       stroke-width: 3;
@@ -239,6 +236,8 @@ export class RoundSlider extends LitElement {
 
     .shadowpath {
       stroke-width: 36px;
+      stroke: rgba(0,0,0,0);
+      stroke-linecap: butt;
     }
 
     .handle {
