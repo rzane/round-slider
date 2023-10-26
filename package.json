@@ -1,47 +1,29 @@
 {
-  "name": "@thomasloven/round-slider",
-  "version": "0.6.0",
-  "description": "",
-  "main": "round-slider.cjs",
+  "name": "@rzane/round-slider",
+  "private": true,
+  "version": "0.0.0",
   "type": "module",
-  "module": "round-slider.js",
-  "typings": "round-slider.d.ts",
-  "dependencies": {
-    "lit": "^2.0.0-rc.2",
-    "tslib": "^2.2.0"
-  },
-  "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-typescript": "^10.0.1",
-    "rollup": "^3.8.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "serve": "^14.1.2",
-    "typescript": "^4.3.2"
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/round-slider.umd.cjs",
+  "module": "./dist/round-slider.js",
+  "types": "./dist/round-slider.d.ts",
+  "exports": {
+    "types": "./dist/round-slider.d.ts",
+    "import": "./dist/round-slider.js",
+    "require": "./dist/round-slider.umd.cjs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && rollup -c",
-    "watch": "tsc -w & rollup -c -w",
-    "develop": "npm run watch & npm run serve",
-    "serve": "serve",
-    "prepublishOnly": "tsc && rollup -c"
+    "dev": "vite",
+    "build": "tsc && vite build"
   },
-  "keywords": [
-    "slider",
-    "round-slider",
-    "webcomponent",
-    "Lit",
-    "litElement"
-  ],
-  "author": "thomasloven",
-  "license": "MIT",
-  "files": [
-    "round-slider.js",
-    "round-slider.cjs",
-    "round-slider.iife.js"
-  ],
-  "repository": {
-    "url": "https://github.com/thomasloven/round-slider.git",
-    "type": "git"
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^4.4.11",
+    "vite-plugin-dts": "^3.6.1"
+  },
+  "dependencies": {
+    "lit": "^3.0.0"
   }
 }
