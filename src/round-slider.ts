@@ -9,12 +9,6 @@ function convertRadiansToCoordinates(radians: number): { x: number; y: number } 
   return { x: Math.cos(radians), y: Math.sin(radians) };
 }
 
-const LENGTH_DEGREES = 270;
-const LENGTH_RADIANS = convertDegreesToRadians(LENGTH_DEGREES);
-const START_DEGREES = 135;
-const START_RADIANS = convertDegreesToRadians(START_DEGREES);
-const END_RADIANS = START_RADIANS + LENGTH_RADIANS;
-
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
   @property({ type: Number }) public value: number = 0;
@@ -22,6 +16,8 @@ export class RoundSlider extends LitElement {
   @property({ type: Number }) public max = 100;
   @property({ type: Number }) public step = 1;
   @property({ type: String }) public valueLabel: string = "";
+  @property({ type: Number }) public startAngle = 135;
+  @property({ type: Number }) public arcLength = 270;
 
   @state() isDragging = false;
 
@@ -48,22 +44,30 @@ export class RoundSlider extends LitElement {
     super.disconnectedCallback();
   }
 
+  private get startRadians(): number {
+    return convertDegreesToRadians(this.startAngle);
+  }
+
+  private get lengthRadians(): number {
+    return Math.min(convertDegreesToRadians(this.arcLength), 2 * Math.PI - 0.01);
+  }
+
   private convertValueToRadians(value: number): number {
     value = Math.min(this.max, Math.max(this.min, value));
     const fraction = (value - this.min) / (this.max - this.min);
-    return START_RADIANS + fraction * LENGTH_RADIANS;
+    return this.startRadians + fraction * this.lengthRadians;
   }
 
   private convertRadiansToValue(radians: number): number {
     return (
       Math.round(
-        ((radians / LENGTH_RADIANS) * (this.max - this.min) + this.min) / this.step
+        ((radians / this.lengthRadians) * (this.max - this.min) + this.min) / this.step
       ) * this.step
     );
   }
 
   private convertCoordinatesToRadians(x: number, y: number): number {
-    return (Math.atan2(y, x) - START_RADIANS + 8 * Math.PI) % (2 * Math.PI);
+    return (Math.atan2(y, x) - this.startRadians + 8 * Math.PI) % (2 * Math.PI);
   }
 
   private mouseEventToValue(event: TouchEvent | MouseEvent) {
@@ -140,13 +144,13 @@ export class RoundSlider extends LitElement {
   }
 
   private isAngleOnArc(degrees: number): boolean {
-    const a = ((START_DEGREES + LENGTH_DEGREES / 2 - degrees + 180 + 360) % 360) - 180;
-    return a < LENGTH_DEGREES / 2 && a > -LENGTH_DEGREES / 2;
+    const a = ((this.startAngle + this.arcLength / 2 - degrees + 180 + 360) % 360) - 180;
+    return a < this.arcLength / 2 && a > -this.arcLength / 2;
   }
 
   private getBoundaries() {
-    const arcStart = convertRadiansToCoordinates(START_RADIANS);
-    const arcEnd = convertRadiansToCoordinates(END_RADIANS);
+    const arcStart = convertRadiansToCoordinates(this.startRadians);
+    const arcEnd = convertRadiansToCoordinates(this.startRadians + this.lengthRadians);
 
     const top = this.isAngleOnArc(270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
     const bottom = this.isAngleOnArc(90) ? 1 : Math.max(arcStart.y, arcEnd.y);
@@ -169,6 +173,8 @@ export class RoundSlider extends LitElement {
     const theta = this.convertValueToRadians(this.value);
     const handle = convertRadiansToCoordinates(theta);
 
+    const path = this.renderArc(this.startRadians, this.startRadians + this.lengthRadians);
+
     return html`
       <svg
         @mousedown=${this.onDragStart}
@@ -180,7 +186,7 @@ export class RoundSlider extends LitElement {
         <g class="slider">
           <path
             class="path"
-            d=${this.renderArc(START_RADIANS, END_RADIANS)}
+            d=${path}
             vector-effect="non-scaling-stroke"
           />
           <path
@@ -190,7 +196,7 @@ export class RoundSlider extends LitElement {
           />
           <path
             class="shadowpath"
-            d=${this.renderArc(START_RADIANS, END_RADIANS)}
+            d=${path}
             vector-effect="non-scaling-stroke"
             stroke="rgba(0,0,0,0)"
             stroke-linecap="butt"
