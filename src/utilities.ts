@@ -3,6 +3,13 @@ export interface Coordinates {
   y: number;
 }
 
+export interface Rectangle {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+}
+
 /**
  * TODO: Pick degrees or radians and stick with it
  */
@@ -26,7 +33,7 @@ export function isAngleOnArc(ctx: Context, degrees: number): boolean {
   return a <= ctx.lengthDegrees / 2 && a >= -ctx.lengthDegrees / 2;
 }
 
-export function getBoundaries(ctx: Context) {
+export function getBoundaries(ctx: Context): Rectangle {
   const arcStart = convertRadiansToCoordinates(ctx.startRadians);
   const arcEnd = convertRadiansToCoordinates(ctx.startRadians + ctx.lengthRadians);
 
