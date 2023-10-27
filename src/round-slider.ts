@@ -73,7 +73,6 @@ export class RoundSlider extends LitElement {
       min: this.min,
       max: this.max,
       step: this.step,
-      lengthDegrees: this.arcLength,
       lengthRadians: this.lengthRadians,
       startRadians: this.startRadians,
     };
@@ -178,7 +177,7 @@ export class RoundSlider extends LitElement {
         <path
           class="handle"
           d="M ${handle.x} ${handle.y} L ${handle.x + 0.001} ${handle.y +
-          0.001}"
+      0.001}"
           tabindex="0"
           role="slider"
           aria-valuemin=${this.min}

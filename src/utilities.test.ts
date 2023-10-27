@@ -10,7 +10,6 @@ const ctx = (lengthDegrees: number, startDegrees: number): Context => ({
   min: 0,
   max: 100,
   step: 1,
-  lengthDegrees,
   lengthRadians: degreesToRadians(lengthDegrees),
   startRadians: degreesToRadians(startDegrees),
 });

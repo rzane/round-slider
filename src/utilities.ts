@@ -13,16 +13,12 @@ export interface Rectangle {
   height: number;
 }
 
-/**
- * TODO: Pick degrees or radians and stick with it
- */
 export interface Context {
   min: number;
   max: number;
   step: number;
   startRadians: Radians;
   lengthRadians: Radians;
-  lengthDegrees: Degrees;
 }
 
 export function degreesToRadians(degrees: Degrees) {
@@ -34,7 +30,7 @@ export function radiansToPoint(radians: Radians): Point {
 }
 
 export function isAngleOnArc(degrees: Degrees, ctx: Context): boolean {
-  return ctx.lengthDegrees >= degrees;
+  return degreesToRadians(degrees) <= ctx.lengthRadians;
 }
 
 export function getBoundaries(ctx: Context): Rectangle {
