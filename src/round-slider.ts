@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { convertDegreesToRadians, convertRadiansToCoordinates } from "./utilities";
+import { convertDegreesToRadians, convertRadiansToCoordinates, isAngleOnArc } from "./utilities";
 
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
@@ -136,19 +136,14 @@ export class RoundSlider extends LitElement {
     this.dispatchEvent(event);
   }
 
-  private isAngleOnArc(degrees: number): boolean {
-    const a = ((this.startAngle + this.arcLength / 2 - degrees + 180 + 360) % 360) - 180;
-    return a < this.arcLength / 2 && a > -this.arcLength / 2;
-  }
-
   private getBoundaries() {
     const arcStart = convertRadiansToCoordinates(this.startRadians);
     const arcEnd = convertRadiansToCoordinates(this.startRadians + this.lengthRadians);
 
-    const top = this.isAngleOnArc(270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
-    const bottom = this.isAngleOnArc(90) ? 1 : Math.max(arcStart.y, arcEnd.y);
-    const left = this.isAngleOnArc(180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
-    const right = this.isAngleOnArc(0) ? 1 : Math.max(arcStart.x, arcEnd.x);
+    const top = isAngleOnArc(this.arcLength, this.startAngle, 270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
+    const bottom = isAngleOnArc(this.arcLength, this.startAngle, 90) ? 1 : Math.max(arcStart.y, arcEnd.y);
+    const left = isAngleOnArc(this.arcLength, this.startAngle, 180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
+    const right = isAngleOnArc(this.arcLength, this.startAngle, 0) ? 1 : Math.max(arcStart.x, arcEnd.x);
 
     return { top, left, height: top + bottom, width: left + right };
   }
