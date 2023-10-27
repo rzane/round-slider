@@ -75,7 +75,6 @@ export class RoundSlider extends LitElement {
       step: this.step,
       lengthDegrees: this.arcLength,
       lengthRadians: this.lengthRadians,
-      startDegrees: this.startAngle,
       startRadians: this.startRadians,
     };
   }
@@ -154,10 +153,7 @@ export class RoundSlider extends LitElement {
     const viewBox = getViewBox(this.context);
     const handle = radiansToPoint(valueToRadians(this.value, this.context));
 
-    const path = renderArc(
-      this.startRadians,
-      this.startRadians + this.lengthRadians,
-    );
+    const path = renderArc(0, this.lengthRadians);
 
     const bar = renderArc(
       valueToRadians(this.min, this.context),
@@ -171,6 +167,7 @@ export class RoundSlider extends LitElement {
         xmlns="http://www.w3.org/2000/svg"
         viewBox=${viewBox}
         focusable="false"
+        style="transform: rotate(${this.startAngle}deg)"
       >
         <g class="slider">
           <path class="path" d=${path} />
