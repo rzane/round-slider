@@ -60,7 +60,7 @@ export class RoundSlider extends LitElement {
   private mouseEventToValue(event: TouchEvent | MouseEvent) {
     const mouse = convertMouseEventToCoordinates(event);
 
-    const bounds = this.getBoundaries();
+    const bounds = getBoundaries(this.context);
     const svg = this.svg.getBoundingClientRect();
     const x = mouse.x - (svg.left + (bounds.left * svg.width) / bounds.width);
     const y = mouse.y - (svg.top + (bounds.top * svg.height) / bounds.height);
@@ -126,10 +126,6 @@ export class RoundSlider extends LitElement {
     });
 
     this.dispatchEvent(event);
-  }
-
-  private getBoundaries() {
-    return getBoundaries(this.context);
   }
 
   private renderArc(start: number, end: number): string {
