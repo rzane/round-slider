@@ -3,6 +3,9 @@ export interface Coordinates {
   y: number;
 }
 
+/**
+ * TODO: Pick degrees or radians and stick with it
+ */
 export interface Context {
   startRadians: number;
   lengthRadians: number;
@@ -18,19 +21,19 @@ export function convertRadiansToCoordinates(radians: number): Coordinates {
   return { x: Math.cos(radians), y: Math.sin(radians) };
 }
 
-export function isAngleOnArc(arcLength: number, startAngle: number, degrees: number): boolean {
-  const a = ((startAngle + arcLength / 2 - degrees + 180 + 360) % 360) - 180;
-  return a <= arcLength / 2 && a >= -arcLength / 2;
+export function isAngleOnArc(ctx: Context, degrees: number): boolean {
+  const a = ((ctx.startDegrees + ctx.lengthDegrees / 2 - degrees + 180 + 360) % 360) - 180;
+  return a <= ctx.lengthDegrees / 2 && a >= -ctx.lengthDegrees / 2;
 }
 
 export function getBoundaries(ctx: Context) {
   const arcStart = convertRadiansToCoordinates(ctx.startRadians);
   const arcEnd = convertRadiansToCoordinates(ctx.startRadians + ctx.lengthRadians);
 
-  const top = isAngleOnArc(ctx.lengthDegrees, ctx.startDegrees, 270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
-  const bottom = isAngleOnArc(ctx.lengthDegrees, ctx.startDegrees, 90) ? 1 : Math.max(arcStart.y, arcEnd.y);
-  const left = isAngleOnArc(ctx.lengthDegrees, ctx.startDegrees, 180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
-  const right = isAngleOnArc(ctx.lengthDegrees, ctx.startDegrees, 0) ? 1 : Math.max(arcStart.x, arcEnd.x);
+  const top = isAngleOnArc(ctx, 270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
+  const bottom = isAngleOnArc(ctx, 90) ? 1 : Math.max(arcStart.y, arcEnd.y);
+  const left = isAngleOnArc(ctx, 180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
+  const right = isAngleOnArc(ctx, 0) ? 1 : Math.max(arcStart.x, arcEnd.x);
 
   return { top, left, height: top + bottom, width: left + right };
 }
