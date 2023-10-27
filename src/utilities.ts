@@ -14,6 +14,9 @@ export interface Rectangle {
  * TODO: Pick degrees or radians and stick with it
  */
 export interface Context {
+  min: number;
+  max: number;
+  step: number;
   startRadians: number;
   lengthRadians: number;
   lengthDegrees: number;
@@ -61,3 +64,13 @@ export function convertMouseEventToCoordinates(event: MouseEvent | TouchEvent): 
 export function convertCoordinatesToRadians(ctx: Context, { x, y }: Coordinates): number {
   return (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
 }
+
+export function convertRadiansToValue(ctx: Context, radians: number): number {
+  return (
+    Math.round(
+      ((radians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min) / ctx.step
+    ) * ctx.step
+  );
+}
+
+

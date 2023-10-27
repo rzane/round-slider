@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { Context, convertCoordinatesToRadians, convertDegreesToRadians, convertMouseEventToCoordinates, convertRadiansToCoordinates, getBoundaries, getViewBox } from "./utilities";
+import { Context, convertCoordinatesToRadians, convertDegreesToRadians, convertMouseEventToCoordinates, convertRadiansToCoordinates, convertRadiansToValue, getBoundaries, getViewBox } from "./utilities";
 
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
@@ -47,6 +47,9 @@ export class RoundSlider extends LitElement {
 
   private get context(): Context {
     return {
+      min: this.min,
+      max: this.max,
+      step: this.step,
       lengthDegrees: this.arcLength,
       lengthRadians: this.lengthRadians,
       startDegrees: this.startAngle,
@@ -60,14 +63,6 @@ export class RoundSlider extends LitElement {
     return this.startRadians + fraction * this.lengthRadians;
   }
 
-  private convertRadiansToValue(radians: number): number {
-    return (
-      Math.round(
-        ((radians / this.lengthRadians) * (this.max - this.min) + this.min) / this.step
-      ) * this.step
-    );
-  }
-
   private mouseEventToValue(event: TouchEvent | MouseEvent) {
     const mouse = convertMouseEventToCoordinates(event);
 
@@ -76,7 +71,7 @@ export class RoundSlider extends LitElement {
     const x = mouse.x - (svg.left + (bounds.left * svg.width) / bounds.width);
     const y = mouse.y - (svg.top + (bounds.top * svg.height) / bounds.height);
     const radians = convertCoordinatesToRadians(this.context, { x, y });
-    return this.convertRadiansToValue(radians);
+    return convertRadiansToValue(this.context, radians);
   }
 
   private onDragStart = (event: TouchEvent | MouseEvent): void => {

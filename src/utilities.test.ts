@@ -2,6 +2,9 @@ import { expect, test } from "vitest";
 import { Context, convertDegreesToRadians, convertRadiansToCoordinates, getViewBox, isAngleOnArc } from "./utilities";
 
 const ctx = (lengthDegrees: number, startDegrees: number): Context => ({
+  min: 0,
+  max: 100,
+  step: 1,
   lengthDegrees,
   lengthRadians: convertDegreesToRadians(lengthDegrees),
   startDegrees,
