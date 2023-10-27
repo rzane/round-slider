@@ -10,5 +10,3 @@ export function convertDegreesToRadians(degrees: number) {
 export function convertRadiansToCoordinates(radians: number): Coordinates {
   return { x: Math.cos(radians), y: Math.sin(radians) };
 }
-
-
