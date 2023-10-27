@@ -35,10 +35,9 @@ export function radiansToPoint(radians: Radians): Point {
 }
 
 export function isAngleOnArc(degrees: Degrees, ctx: Context): boolean {
-  const a =
-    ((ctx.startDegrees + ctx.lengthDegrees / 2 - degrees + 180 + 360) % 360) -
-    180;
-  return a <= ctx.lengthDegrees / 2 && a >= -ctx.lengthDegrees / 2;
+  const middle = ctx.lengthDegrees / 2;
+  const delta = ((ctx.startDegrees + middle - degrees + 180 + 360) % 360) - 180;
+  return Math.abs(delta) <= middle;
 }
 
 export function getBoundaries(ctx: Context): Rectangle {
@@ -67,15 +66,13 @@ export function mouseEventToPoint(event: MouseEvent | TouchEvent): Point {
 }
 
 export function pointToValue({ x, y }: Point, ctx: Context): number {
-  const radians =
+  const normalizedRadians =
     (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
 
-  return (
-    Math.round(
-      ((radians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min) /
-      ctx.step,
-    ) * ctx.step
-  );
+  const scaledValue =
+    (normalizedRadians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min;
+
+  return Math.round(scaledValue / ctx.step) * ctx.step;
 }
 
 export function valueToRadians(value: number, ctx: Context): Radians {
@@ -85,9 +82,9 @@ export function valueToRadians(value: number, ctx: Context): Radians {
 }
 
 export function renderArc(startRadians: Radians, endRadians: Radians): string {
-  const diff = endRadians - startRadians;
-  const startXY = radiansToPoint(startRadians);
-  const endXY = radiansToPoint(endRadians + 0.001);
-  return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${diff > Math.PI ? "1" : "0"
-    } 1, ${endXY.x} ${endXY.y}`;
+  const delta = endRadians - startRadians;
+  const startPoint = radiansToPoint(startRadians);
+  const endPoint = radiansToPoint(endRadians + 0.001);
+  const largeArcFlag = delta > Math.PI ? "1" : "0";
+  return `M ${startPoint.x} ${startPoint.y} A 1 1, 0, ${largeArcFlag} 1, ${endPoint.x} ${endPoint.y}`;
 }
