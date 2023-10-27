@@ -2,11 +2,11 @@ import { LitElement, html, css } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import {
   Context,
-  convertCoordinatesToValue,
-  convertDegreesToRadians,
-  convertMouseEventToCoordinates,
-  convertRadiansToCoordinates,
-  convertValueToRadians,
+  pointToValue,
+  degreesToRadians,
+  mouseEventToPoint,
+  radiansToPoint,
+  valueToRadians,
   getBoundaries,
   getViewBox,
   renderArc,
@@ -61,14 +61,11 @@ export class RoundSlider extends LitElement {
   }
 
   private get startRadians(): number {
-    return convertDegreesToRadians(this.startAngle);
+    return degreesToRadians(this.startAngle);
   }
 
   private get lengthRadians(): number {
-    return Math.min(
-      convertDegreesToRadians(this.arcLength),
-      2 * Math.PI - 0.01,
-    );
+    return Math.min(degreesToRadians(this.arcLength), 2 * Math.PI - 0.01);
   }
 
   private get context(): Context {
@@ -84,13 +81,13 @@ export class RoundSlider extends LitElement {
   }
 
   private mouseEventToValue(event: TouchEvent | MouseEvent) {
-    const mouse = convertMouseEventToCoordinates(event);
+    const mouse = mouseEventToPoint(event);
 
     const bounds = getBoundaries(this.context);
     const svg = this.svg.getBoundingClientRect();
     const x = mouse.x - (svg.left + (bounds.left * svg.width) / bounds.width);
     const y = mouse.y - (svg.top + (bounds.top * svg.height) / bounds.height);
-    return convertCoordinatesToValue(this.context, { x, y });
+    return pointToValue({ x, y }, this.context);
   }
 
   private onDragStart = (event: TouchEvent | MouseEvent): void => {
@@ -155,8 +152,7 @@ export class RoundSlider extends LitElement {
 
   protected render() {
     const viewBox = getViewBox(this.context);
-    const theta = convertValueToRadians(this.context, this.value);
-    const handle = convertRadiansToCoordinates(theta);
+    const handle = radiansToPoint(valueToRadians(this.value, this.context));
 
     const path = renderArc(
       this.startRadians,
@@ -164,8 +160,8 @@ export class RoundSlider extends LitElement {
     );
 
     const bar = renderArc(
-      convertValueToRadians(this.context, this.min),
-      convertValueToRadians(this.context, this.value),
+      valueToRadians(this.min, this.context),
+      valueToRadians(this.value, this.context),
     );
 
     return html`
@@ -185,7 +181,7 @@ export class RoundSlider extends LitElement {
         <path
           class="handle"
           d="M ${handle.x} ${handle.y} L ${handle.x + 0.001} ${handle.y +
-          0.001}"
+      0.001}"
           tabindex="0"
           role="slider"
           aria-valuemin=${this.min}

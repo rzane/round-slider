@@ -1,7 +1,7 @@
 type Radians = number;
 type Degrees = number;
 
-export interface Coordinates {
+export interface Point {
   x: number;
   y: number;
 }
@@ -26,15 +26,15 @@ export interface Context {
   startDegrees: Degrees;
 }
 
-export function convertDegreesToRadians(degrees: Degrees) {
+export function degreesToRadians(degrees: Degrees) {
   return (degrees * Math.PI) / 180;
 }
 
-export function convertRadiansToCoordinates(radians: Radians): Coordinates {
+export function radiansToPoint(radians: Radians): Point {
   return { x: Math.cos(radians), y: Math.sin(radians) };
 }
 
-export function isAngleOnArc(ctx: Context, degrees: Degrees): boolean {
+export function isAngleOnArc(degrees: Degrees, ctx: Context): boolean {
   const a =
     ((ctx.startDegrees + ctx.lengthDegrees / 2 - degrees + 180 + 360) % 360) -
     180;
@@ -42,15 +42,13 @@ export function isAngleOnArc(ctx: Context, degrees: Degrees): boolean {
 }
 
 export function getBoundaries(ctx: Context): Rectangle {
-  const arcStart = convertRadiansToCoordinates(ctx.startRadians);
-  const arcEnd = convertRadiansToCoordinates(
-    ctx.startRadians + ctx.lengthRadians,
-  );
+  const arcStart = radiansToPoint(ctx.startRadians);
+  const arcEnd = radiansToPoint(ctx.startRadians + ctx.lengthRadians);
 
-  const top = isAngleOnArc(ctx, 270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
-  const bottom = isAngleOnArc(ctx, 90) ? 1 : Math.max(arcStart.y, arcEnd.y);
-  const left = isAngleOnArc(ctx, 180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
-  const right = isAngleOnArc(ctx, 0) ? 1 : Math.max(arcStart.x, arcEnd.x);
+  const top = isAngleOnArc(270, ctx) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
+  const bottom = isAngleOnArc(90, ctx) ? 1 : Math.max(arcStart.y, arcEnd.y);
+  const left = isAngleOnArc(180, ctx) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
+  const right = isAngleOnArc(0, ctx) ? 1 : Math.max(arcStart.x, arcEnd.x);
 
   return { top, left, height: top + bottom, width: left + right };
 }
@@ -60,9 +58,7 @@ export function getViewBox(ctx: Context) {
   return `${-left} ${-top} ${width} ${height}`;
 }
 
-export function convertMouseEventToCoordinates(
-  event: MouseEvent | TouchEvent,
-): Coordinates {
+export function mouseEventToPoint(event: MouseEvent | TouchEvent): Point {
   if (event instanceof MouseEvent) {
     return { x: event.clientX, y: event.clientY };
   } else {
@@ -70,22 +66,19 @@ export function convertMouseEventToCoordinates(
   }
 }
 
-export function convertCoordinatesToValue(
-  ctx: Context,
-  { x, y }: Coordinates,
-): number {
+export function pointToValue({ x, y }: Point, ctx: Context): number {
   const radians =
     (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
 
   return (
     Math.round(
       ((radians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min) /
-        ctx.step,
+      ctx.step,
     ) * ctx.step
   );
 }
 
-export function convertValueToRadians(ctx: Context, value: number): Radians {
+export function valueToRadians(value: number, ctx: Context): Radians {
   value = Math.min(ctx.max, Math.max(ctx.min, value));
   const fraction = (value - ctx.min) / (ctx.max - ctx.min);
   return ctx.startRadians + fraction * ctx.lengthRadians;
@@ -93,9 +86,8 @@ export function convertValueToRadians(ctx: Context, value: number): Radians {
 
 export function renderArc(startRadians: Radians, endRadians: Radians): string {
   const diff = endRadians - startRadians;
-  const startXY = convertRadiansToCoordinates(startRadians);
-  const endXY = convertRadiansToCoordinates(endRadians + 0.001);
-  return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${
-    diff > Math.PI ? "1" : "0"
-  } 1, ${endXY.x} ${endXY.y}`;
+  const startXY = radiansToPoint(startRadians);
+  const endXY = radiansToPoint(endRadians + 0.001);
+  return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${diff > Math.PI ? "1" : "0"
+    } 1, ${endXY.x} ${endXY.y}`;
 }
