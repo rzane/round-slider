@@ -28,17 +28,17 @@ test("isAngleOnArc", () => {
 
 test("getViewBox", () => {
   const arc = getViewBox({
-    arcLength: 270,
+    lengthDegrees: 270,
     lengthRadians: convertDegreesToRadians(270),
-    startAngle: 135,
+    startDegrees: 135,
     startRadians: convertDegreesToRadians(135)
   });
   expect(arc).toEqual("-1 -1 2 1.7071067811865475");
 
   const circle = getViewBox({
-    arcLength: 360,
+    lengthDegrees: 360,
     lengthRadians: convertDegreesToRadians(360),
-    startAngle: 0,
+    startDegrees: 0,
     startRadians: convertDegreesToRadians(0)
   });
   expect(circle).toEqual("-1 -1 2 2");

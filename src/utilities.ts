@@ -6,8 +6,8 @@ export interface Coordinates {
 export interface Context {
   startRadians: number;
   lengthRadians: number;
-  arcLength: number;
-  startAngle: number;
+  lengthDegrees: number;
+  startDegrees: number;
 }
 
 export function convertDegreesToRadians(degrees: number) {
@@ -27,10 +27,10 @@ export function getBoundaries(ctx: Context) {
   const arcStart = convertRadiansToCoordinates(ctx.startRadians);
   const arcEnd = convertRadiansToCoordinates(ctx.startRadians + ctx.lengthRadians);
 
-  const top = isAngleOnArc(ctx.arcLength, ctx.startAngle, 270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
-  const bottom = isAngleOnArc(ctx.arcLength, ctx.startAngle, 90) ? 1 : Math.max(arcStart.y, arcEnd.y);
-  const left = isAngleOnArc(ctx.arcLength, ctx.startAngle, 180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
-  const right = isAngleOnArc(ctx.arcLength, ctx.startAngle, 0) ? 1 : Math.max(arcStart.x, arcEnd.x);
+  const top = isAngleOnArc(ctx.lengthDegrees, ctx.startDegrees, 270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
+  const bottom = isAngleOnArc(ctx.lengthDegrees, ctx.startDegrees, 90) ? 1 : Math.max(arcStart.y, arcEnd.y);
+  const left = isAngleOnArc(ctx.lengthDegrees, ctx.startDegrees, 180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
+  const right = isAngleOnArc(ctx.lengthDegrees, ctx.startDegrees, 0) ? 1 : Math.max(arcStart.x, arcEnd.x);
 
   return { top, left, height: top + bottom, width: left + right };
 }

@@ -47,9 +47,9 @@ export class RoundSlider extends LitElement {
 
   private get context(): Context {
     return {
-      arcLength: this.arcLength,
-      startAngle: this.startAngle,
+      lengthDegrees: this.arcLength,
       lengthRadians: this.lengthRadians,
+      startDegrees: this.startAngle,
       startRadians: this.startRadians,
     };
   }
