@@ -79,3 +79,9 @@ export function convertValueToRadians(ctx: Context, value: number): number {
   return ctx.startRadians + fraction * ctx.lengthRadians;
 }
 
+export function renderArc(startRadians: number, endRadians: number): string {
+  const diff = endRadians - startRadians;
+  const startXY = convertRadiansToCoordinates(startRadians);
+  const endXY = convertRadiansToCoordinates(endRadians + 0.001);
+  return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${diff > Math.PI ? "1" : "0"} 1, ${endXY.x} ${endXY.y}`;
+}
