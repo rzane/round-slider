@@ -13,5 +13,5 @@ export function convertRadiansToCoordinates(radians: number): Coordinates {
 
 export function isAngleOnArc(arcLength: number, startAngle: number, degrees: number): boolean {
   const a = ((startAngle + arcLength / 2 - degrees + 180 + 360) % 360) - 180;
-  return a < arcLength / 2 && a > -arcLength / 2;
+  return a <= arcLength / 2 && a >= -arcLength / 2;
 }
