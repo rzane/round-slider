@@ -1,13 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-
-function convertDegreesToRadians(degrees: number) {
-  return (degrees * Math.PI) / 180;
-}
-
-function convertRadiansToCoordinates(radians: number): { x: number; y: number } {
-  return { x: Math.cos(radians), y: Math.sin(radians) };
-}
+import { convertDegreesToRadians, convertRadiansToCoordinates } from "./utilities";
 
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
