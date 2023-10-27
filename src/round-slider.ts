@@ -19,7 +19,8 @@ export class RoundSlider extends LitElement {
   @property({ type: Number }) public min = 0;
   @property({ type: Number }) public max = 100;
   @property({ type: Number }) public step = 1;
-  @property({ type: String }) public valueLabel: string = "";
+  @property({ type: String, attribute: "aria-label" })
+  public ariaLabel: string = "";
   @property({ type: Number }) public startAngle = 135;
   @property({ type: Number }) public arcLength = 270;
 
@@ -179,7 +180,7 @@ export class RoundSlider extends LitElement {
           aria-valuemin=${this.min}
           aria-valuemax=${this.max}
           aria-valuenow=${this.value}
-          aria-label=${this.valueLabel}
+          aria-label=${this.ariaLabel}
         />
       </svg>
     `;
