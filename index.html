@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Round-slider demo</title>
@@ -18,9 +18,18 @@
 
     <!-- FIXME -->
     <h2>Styling (<span class="value">50</span>)</h2>
-    <round-slider value="50" style="--round-slider-path-color: red"></round-slider>
-    <round-slider value="50" style="--round-slider-bar-color: red"></round-slider>
-    <round-slider value="50" style="--round-slider-handle-color: red"></round-slider>
+    <round-slider
+      value="50"
+      style="--round-slider-path-color: red"
+    ></round-slider>
+    <round-slider
+      value="50"
+      style="--round-slider-bar-color: red"
+    ></round-slider>
+    <round-slider
+      value="50"
+      style="--round-slider-handle-color: red"
+    ></round-slider>
 
     <!-- FIXME -->
     <h2>Disabled</h2>
@@ -43,11 +52,13 @@
           if (el.value === undefined) return;
           el.value = value;
         });
-        const span = document.querySelectorAll("span.value").forEach(function (el) {
-          el.innerHTML = value;
-          if (active) el.style.color = "red";
-          else el.style.color = "black";
-        });
+        const span = document
+          .querySelectorAll("span.value")
+          .forEach(function (el) {
+            el.innerHTML = value;
+            if (active) el.style.color = "red";
+            else el.style.color = "black";
+          });
       };
 
       document.querySelectorAll("round-slider").forEach(function (el) {

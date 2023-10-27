@@ -14,14 +14,26 @@ import {
 
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
-  @property({ type: Number }) public value: number = 0;
-  @property({ type: Number }) public min = 0;
-  @property({ type: Number }) public max = 100;
-  @property({ type: Number }) public step = 1;
+  @property({ type: Number })
+  public value: number = 0;
+
+  @property({ type: Number })
+  public min = 0;
+
+  @property({ type: Number })
+  public max = 100;
+
+  @property({ type: Number })
+  public step = 1;
+
   @property({ type: String, attribute: "aria-label" })
   public ariaLabel: string = "";
-  @property({ type: Number }) public startAngle = 135;
-  @property({ type: Number }) public arcLength = 270;
+
+  @property({ type: Number })
+  public arcLength = 270;
+
+  @property({ type: Number })
+  public startAngle = 135;
 
   private isDragging = false;
 
@@ -172,7 +184,8 @@ export class RoundSlider extends LitElement {
 
         <path
           class="handle"
-          d="M ${handle.x} ${handle.y} L ${handle.x + 0.001} ${handle.y + 0.001}"
+          d="M ${handle.x} ${handle.y} L ${handle.x + 0.001} ${handle.y +
+          0.001}"
           tabindex="0"
           role="slider"
           aria-valuemin=${this.min}
