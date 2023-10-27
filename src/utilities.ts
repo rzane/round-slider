@@ -32,13 +32,17 @@ export function convertRadiansToCoordinates(radians: number): Coordinates {
 }
 
 export function isAngleOnArc(ctx: Context, degrees: number): boolean {
-  const a = ((ctx.startDegrees + ctx.lengthDegrees / 2 - degrees + 180 + 360) % 360) - 180;
+  const a =
+    ((ctx.startDegrees + ctx.lengthDegrees / 2 - degrees + 180 + 360) % 360) -
+    180;
   return a <= ctx.lengthDegrees / 2 && a >= -ctx.lengthDegrees / 2;
 }
 
 export function getBoundaries(ctx: Context): Rectangle {
   const arcStart = convertRadiansToCoordinates(ctx.startRadians);
-  const arcEnd = convertRadiansToCoordinates(ctx.startRadians + ctx.lengthRadians);
+  const arcEnd = convertRadiansToCoordinates(
+    ctx.startRadians + ctx.lengthRadians,
+  );
 
   const top = isAngleOnArc(ctx, 270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
   const bottom = isAngleOnArc(ctx, 90) ? 1 : Math.max(arcStart.y, arcEnd.y);
@@ -53,7 +57,9 @@ export function getViewBox(ctx: Context) {
   return `${-left} ${-top} ${width} ${height}`;
 }
 
-export function convertMouseEventToCoordinates(event: MouseEvent | TouchEvent): Coordinates {
+export function convertMouseEventToCoordinates(
+  event: MouseEvent | TouchEvent,
+): Coordinates {
   if (event instanceof MouseEvent) {
     return { x: event.clientX, y: event.clientY };
   } else {
@@ -61,14 +67,18 @@ export function convertMouseEventToCoordinates(event: MouseEvent | TouchEvent): 
   }
 }
 
-export function convertCoordinatesToRadians(ctx: Context, { x, y }: Coordinates): number {
+export function convertCoordinatesToRadians(
+  ctx: Context,
+  { x, y }: Coordinates,
+): number {
   return (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
 }
 
 export function convertRadiansToValue(ctx: Context, radians: number): number {
   return (
     Math.round(
-      ((radians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min) / ctx.step
+      ((radians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min) /
+        ctx.step,
     ) * ctx.step
   );
 }
@@ -83,5 +93,7 @@ export function renderArc(startRadians: number, endRadians: number): string {
   const diff = endRadians - startRadians;
   const startXY = convertRadiansToCoordinates(startRadians);
   const endXY = convertRadiansToCoordinates(endRadians + 0.001);
-  return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${diff > Math.PI ? "1" : "0"} 1, ${endXY.x} ${endXY.y}`;
+  return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${
+    diff > Math.PI ? "1" : "0"
+  } 1, ${endXY.x} ${endXY.y}`;
 }

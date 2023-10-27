@@ -1,5 +1,11 @@
 import { expect, test } from "vitest";
-import { Context, convertDegreesToRadians, convertRadiansToCoordinates, getViewBox, isAngleOnArc } from "./utilities";
+import {
+  Context,
+  convertDegreesToRadians,
+  convertRadiansToCoordinates,
+  getViewBox,
+  isAngleOnArc,
+} from "./utilities";
 
 const ctx = (lengthDegrees: number, startDegrees: number): Context => ({
   min: 0,
@@ -8,7 +14,7 @@ const ctx = (lengthDegrees: number, startDegrees: number): Context => ({
   lengthDegrees,
   lengthRadians: convertDegreesToRadians(lengthDegrees),
   startDegrees,
-  startRadians: convertDegreesToRadians(startDegrees)
+  startRadians: convertDegreesToRadians(startDegrees),
 });
 
 test("convertDegreesToRadians", () => {
@@ -18,7 +24,7 @@ test("convertDegreesToRadians", () => {
 test("convertRadiansToCoordinates", () => {
   expect(convertRadiansToCoordinates(6.28)).toEqual({
     x: expect.closeTo(1),
-    y: expect.closeTo(0)
+    y: expect.closeTo(0),
   });
 });
 
@@ -43,4 +49,3 @@ test("getViewBox", () => {
   const arc = ctx(270, 135);
   expect(getViewBox(arc)).toEqual("-1 -1 2 1.7071067811865475");
 });
-

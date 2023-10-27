@@ -1,6 +1,17 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { Context, convertCoordinatesToRadians, convertDegreesToRadians, convertMouseEventToCoordinates, convertRadiansToCoordinates, convertRadiansToValue, convertValueToRadians, getBoundaries, getViewBox, renderArc } from "./utilities";
+import {
+  Context,
+  convertCoordinatesToRadians,
+  convertDegreesToRadians,
+  convertMouseEventToCoordinates,
+  convertRadiansToCoordinates,
+  convertRadiansToValue,
+  convertValueToRadians,
+  getBoundaries,
+  getViewBox,
+  renderArc,
+} from "./utilities";
 
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
@@ -14,7 +25,7 @@ export class RoundSlider extends LitElement {
 
   private isDragging = false;
 
-  @query('svg', true) svg!: SVGElement;
+  @query("svg", true) svg!: SVGElement;
 
   constructor() {
     super();
@@ -42,7 +53,10 @@ export class RoundSlider extends LitElement {
   }
 
   private get lengthRadians(): number {
-    return Math.min(convertDegreesToRadians(this.arcLength), 2 * Math.PI - 0.01);
+    return Math.min(
+      convertDegreesToRadians(this.arcLength),
+      2 * Math.PI - 0.01,
+    );
   }
 
   private get context(): Context {
@@ -79,7 +93,7 @@ export class RoundSlider extends LitElement {
       this.isDragging = true;
       this.setValue(this.mouseEventToValue(event));
     }
-  }
+  };
 
   private onDrag = (event: TouchEvent | MouseEvent): void => {
     if (this.isDragging) {
@@ -102,7 +116,7 @@ export class RoundSlider extends LitElement {
       ArrowRight: () => this.setValue(this.value + this.step),
       ArrowUp: () => this.setValue(this.value + this.step),
       Home: () => this.setValue(this.min),
-      End: () => this.setValue(this.max)
+      End: () => this.setValue(this.max),
     };
 
     if (keys[event.key]) {
@@ -129,13 +143,19 @@ export class RoundSlider extends LitElement {
   }
 
   protected render() {
+    const viewBox = getViewBox(this.context);
     const theta = convertValueToRadians(this.context, this.value);
     const handle = convertRadiansToCoordinates(theta);
 
-    const path = renderArc(this.startRadians, this.startRadians + this.lengthRadians);
-    const bar = renderArc(convertValueToRadians(this.context, this.min), convertValueToRadians(this.context, this.value));
+    const path = renderArc(
+      this.startRadians,
+      this.startRadians + this.lengthRadians,
+    );
 
-    const viewBox = getViewBox(this.context);
+    const bar = renderArc(
+      convertValueToRadians(this.context, this.min),
+      convertValueToRadians(this.context, this.value),
+    );
 
     return html`
       <svg
@@ -197,7 +217,7 @@ export class RoundSlider extends LitElement {
 
     .shadowpath {
       stroke-width: 36px;
-      stroke: rgba(0,0,0,0);
+      stroke: rgba(0, 0, 0, 0);
       stroke-linecap: butt;
     }
 
@@ -206,7 +226,9 @@ export class RoundSlider extends LitElement {
       stroke-linecap: round;
       stroke-width: 24px;
       cursor: pointer;
-      transition: stroke 200ms ease-out, stroke-width 200ms ease-out;
+      transition:
+        stroke 200ms ease-out,
+        stroke-width 200ms ease-out;
     }
 
     .handle:focus {
