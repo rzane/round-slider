@@ -70,18 +70,16 @@ export function convertMouseEventToCoordinates(
   }
 }
 
-export function convertCoordinatesToRadians(
+export function convertCoordinatesToValue(
   ctx: Context,
   { x, y }: Coordinates,
-): Radians {
-  return (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
-}
+): number {
+  const radians = (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
 
-export function convertRadiansToValue(ctx: Context, radians: Radians): number {
   return (
     Math.round(
       ((radians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min) /
-        ctx.step,
+      ctx.step,
     ) * ctx.step
   );
 }
@@ -96,7 +94,6 @@ export function renderArc(startRadians: Radians, endRadians: Radians): string {
   const diff = endRadians - startRadians;
   const startXY = convertRadiansToCoordinates(startRadians);
   const endXY = convertRadiansToCoordinates(endRadians + 0.001);
-  return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${
-    diff > Math.PI ? "1" : "0"
-  } 1, ${endXY.x} ${endXY.y}`;
+  return `M ${startXY.x} ${startXY.y} A 1 1, 0, ${diff > Math.PI ? "1" : "0"
+    } 1, ${endXY.x} ${endXY.y}`;
 }

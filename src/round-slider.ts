@@ -2,11 +2,10 @@ import { LitElement, html, css } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import {
   Context,
-  convertCoordinatesToRadians,
+  convertCoordinatesToValue,
   convertDegreesToRadians,
   convertMouseEventToCoordinates,
   convertRadiansToCoordinates,
-  convertRadiansToValue,
   convertValueToRadians,
   getBoundaries,
   getViewBox,
@@ -79,8 +78,7 @@ export class RoundSlider extends LitElement {
     const svg = this.svg.getBoundingClientRect();
     const x = mouse.x - (svg.left + (bounds.left * svg.width) / bounds.width);
     const y = mouse.y - (svg.top + (bounds.top * svg.height) / bounds.height);
-    const radians = convertCoordinatesToRadians(this.context, { x, y });
-    return convertRadiansToValue(this.context, radians);
+    return convertCoordinatesToValue(this.context, { x, y });
   }
 
   private onDragStart = (event: TouchEvent | MouseEvent): void => {
