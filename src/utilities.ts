@@ -57,3 +57,7 @@ export function convertMouseEventToCoordinates(event: MouseEvent | TouchEvent): 
     return { x: event.touches[0].clientX, y: event.touches[0].clientY };
   }
 }
+
+export function convertCoordinatesToRadians(ctx: Context, { x, y }: Coordinates): number {
+  return (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
+}
