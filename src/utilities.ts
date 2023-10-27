@@ -1,3 +1,6 @@
+type Radians = number;
+type Degrees = number;
+
 export interface Coordinates {
   x: number;
   y: number;
@@ -17,21 +20,21 @@ export interface Context {
   min: number;
   max: number;
   step: number;
-  startRadians: number;
-  lengthRadians: number;
-  lengthDegrees: number;
-  startDegrees: number;
+  startRadians: Radians;
+  lengthRadians: Radians;
+  lengthDegrees: Degrees;
+  startDegrees: Degrees;
 }
 
-export function convertDegreesToRadians(degrees: number) {
+export function convertDegreesToRadians(degrees: Degrees) {
   return (degrees * Math.PI) / 180;
 }
 
-export function convertRadiansToCoordinates(radians: number): Coordinates {
+export function convertRadiansToCoordinates(radians: Radians): Coordinates {
   return { x: Math.cos(radians), y: Math.sin(radians) };
 }
 
-export function isAngleOnArc(ctx: Context, degrees: number): boolean {
+export function isAngleOnArc(ctx: Context, degrees: Degrees): boolean {
   const a =
     ((ctx.startDegrees + ctx.lengthDegrees / 2 - degrees + 180 + 360) % 360) -
     180;
@@ -70,11 +73,11 @@ export function convertMouseEventToCoordinates(
 export function convertCoordinatesToRadians(
   ctx: Context,
   { x, y }: Coordinates,
-): number {
+): Radians {
   return (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
 }
 
-export function convertRadiansToValue(ctx: Context, radians: number): number {
+export function convertRadiansToValue(ctx: Context, radians: Radians): number {
   return (
     Math.round(
       ((radians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min) /
@@ -83,13 +86,13 @@ export function convertRadiansToValue(ctx: Context, radians: number): number {
   );
 }
 
-export function convertValueToRadians(ctx: Context, value: number): number {
+export function convertValueToRadians(ctx: Context, value: number): Radians {
   value = Math.min(ctx.max, Math.max(ctx.min, value));
   const fraction = (value - ctx.min) / (ctx.max - ctx.min);
   return ctx.startRadians + fraction * ctx.lengthRadians;
 }
 
-export function renderArc(startRadians: number, endRadians: number): string {
+export function renderArc(startRadians: Radians, endRadians: Radians): string {
   const diff = endRadians - startRadians;
   const startXY = convertRadiansToCoordinates(startRadians);
   const endXY = convertRadiansToCoordinates(endRadians + 0.001);
