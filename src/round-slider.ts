@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { Context, convertCoordinatesToRadians, convertDegreesToRadians, convertMouseEventToCoordinates, convertRadiansToCoordinates, convertRadiansToValue, getBoundaries, getViewBox } from "./utilities";
+import { Context, convertCoordinatesToRadians, convertDegreesToRadians, convertMouseEventToCoordinates, convertRadiansToCoordinates, convertRadiansToValue, convertValueToRadians, getBoundaries, getViewBox } from "./utilities";
 
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
@@ -55,12 +55,6 @@ export class RoundSlider extends LitElement {
       startDegrees: this.startAngle,
       startRadians: this.startRadians,
     };
-  }
-
-  private convertValueToRadians(value: number): number {
-    value = Math.min(this.max, Math.max(this.min, value));
-    const fraction = (value - this.min) / (this.max - this.min);
-    return this.startRadians + fraction * this.lengthRadians;
   }
 
   private mouseEventToValue(event: TouchEvent | MouseEvent) {
@@ -146,11 +140,11 @@ export class RoundSlider extends LitElement {
   }
 
   protected render() {
-    const theta = this.convertValueToRadians(this.value);
+    const theta = convertValueToRadians(this.context, this.value);
     const handle = convertRadiansToCoordinates(theta);
 
     const path = this.renderArc(this.startRadians, this.startRadians + this.lengthRadians);
-    const bar = this.renderArc(this.convertValueToRadians(this.min), this.convertValueToRadians(this.value));
+    const bar = this.renderArc(convertValueToRadians(this.context, this.min), convertValueToRadians(this.context, this.value));
 
     const viewBox = getViewBox(this.context);
 

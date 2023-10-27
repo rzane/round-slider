@@ -73,4 +73,9 @@ export function convertRadiansToValue(ctx: Context, radians: number): number {
   );
 }
 
+export function convertValueToRadians(ctx: Context, value: number): number {
+  value = Math.min(ctx.max, Math.max(ctx.min, value));
+  const fraction = (value - ctx.min) / (ctx.max - ctx.min);
+  return ctx.startRadians + fraction * ctx.lengthRadians;
+}
 
