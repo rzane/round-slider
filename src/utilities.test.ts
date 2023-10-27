@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { convertDegreesToRadians, convertRadiansToCoordinates, isAngleOnArc } from "./utilities";
+import { convertDegreesToRadians, convertRadiansToCoordinates, getViewBox, isAngleOnArc } from "./utilities";
 
 test("convertDegreesToRadians", () => {
   expect(convertDegreesToRadians(360)).toBeCloseTo(6.28);
@@ -24,5 +24,23 @@ test("isAngleOnArc", () => {
   expect(isAngleOnArc(90, 180, 275)).toBe(false);
   expect(isAngleOnArc(90, -90, 0)).toBe(true);
   expect(isAngleOnArc(90, -90, 90)).toBe(false);
+});
+
+test("getViewBox", () => {
+  const arc = getViewBox({
+    arcLength: 270,
+    lengthRadians: convertDegreesToRadians(270),
+    startAngle: 135,
+    startRadians: convertDegreesToRadians(135)
+  });
+  expect(arc).toEqual("-1 -1 2 1.7071067811865475");
+
+  const circle = getViewBox({
+    arcLength: 360,
+    lengthRadians: convertDegreesToRadians(360),
+    startAngle: 0,
+    startRadians: convertDegreesToRadians(0)
+  });
+  expect(circle).toEqual("-1 -1 2 2");
 });
 

@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { convertDegreesToRadians, convertRadiansToCoordinates, isAngleOnArc } from "./utilities";
+import { Context, convertDegreesToRadians, convertRadiansToCoordinates, getBoundaries, getViewBox } from "./utilities";
 
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
@@ -43,6 +43,15 @@ export class RoundSlider extends LitElement {
 
   private get lengthRadians(): number {
     return Math.min(convertDegreesToRadians(this.arcLength), 2 * Math.PI - 0.01);
+  }
+
+  private get context(): Context {
+    return {
+      arcLength: this.arcLength,
+      startAngle: this.startAngle,
+      lengthRadians: this.lengthRadians,
+      startRadians: this.startRadians,
+    };
   }
 
   private convertValueToRadians(value: number): number {
@@ -137,15 +146,7 @@ export class RoundSlider extends LitElement {
   }
 
   private getBoundaries() {
-    const arcStart = convertRadiansToCoordinates(this.startRadians);
-    const arcEnd = convertRadiansToCoordinates(this.startRadians + this.lengthRadians);
-
-    const top = isAngleOnArc(this.arcLength, this.startAngle, 270) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
-    const bottom = isAngleOnArc(this.arcLength, this.startAngle, 90) ? 1 : Math.max(arcStart.y, arcEnd.y);
-    const left = isAngleOnArc(this.arcLength, this.startAngle, 180) ? 1 : Math.max(-arcStart.x, -arcEnd.x);
-    const right = isAngleOnArc(this.arcLength, this.startAngle, 0) ? 1 : Math.max(arcStart.x, arcEnd.x);
-
-    return { top, left, height: top + bottom, width: left + right };
+    return getBoundaries(this.context);
   }
 
   private renderArc(start: number, end: number): string {
@@ -156,20 +157,20 @@ export class RoundSlider extends LitElement {
   }
 
   protected render() {
-    const bounds = this.getBoundaries();
-
     const theta = this.convertValueToRadians(this.value);
     const handle = convertRadiansToCoordinates(theta);
 
     const path = this.renderArc(this.startRadians, this.startRadians + this.lengthRadians);
     const bar = this.renderArc(this.convertValueToRadians(this.min), this.convertValueToRadians(this.value));
 
+    const viewBox = getViewBox(this.context);
+
     return html`
       <svg
         @mousedown=${this.onDragStart}
         @touchstart=${this.onDragStart}
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="${-bounds.left} ${-bounds.top} ${bounds.width} ${bounds.height}"
+        viewBox=${viewBox}
         focusable="false"
       >
         <g class="slider">
