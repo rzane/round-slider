@@ -43,9 +43,11 @@ test("isAngleOnArc", () => {
 });
 
 test("getViewBox", () => {
-  const circle = ctx(360, 0);
-  expect(getViewBox(circle)).toEqual("-1 -1 2 2");
+  expect(getViewBox(ctx(360, 0))).toEqual("-1 -1 2 2");
+  expect(getViewBox(ctx(270, 0))).toEqual("-1 -1 2 2");
+  expect(getViewBox(ctx(180, 0))).toEqual("-1 0 2 1");
+  expect(getViewBox(ctx(90, 0))).toEqual("6.123233995736766e-17 0 0.9999999999999999 1");
+  expect(getViewBox(ctx(45, 0))).toEqual("0.7071067811865476 0 0.2928932188134524 0.7071067811865475");
 
-  const arc = ctx(270, 135);
-  expect(getViewBox(arc)).toEqual("-1 -1 2 1.7071067811865475");
+  expect(getViewBox(ctx(270, 135))).toEqual("-1 -1 2 1.7071067811865475");
 });
