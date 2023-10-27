@@ -39,6 +39,14 @@ export function getBoundaries(ctx: Context) {
 }
 
 export function getViewBox(ctx: Context) {
-  const bounds = getBoundaries(ctx);
-  return `${-bounds.left} ${-bounds.top} ${bounds.width} ${bounds.height}`
+  const { left, top, width, height } = getBoundaries(ctx);
+  return `${-left} ${-top} ${width} ${height}`;
+}
+
+export function convertMouseEventToCoordinates(event: MouseEvent | TouchEvent): Coordinates {
+  if (event instanceof MouseEvent) {
+    return { x: event.clientX, y: event.clientY };
+  } else {
+    return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+  }
 }

@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { Context, convertDegreesToRadians, convertRadiansToCoordinates, getBoundaries, getViewBox } from "./utilities";
+import { Context, convertDegreesToRadians, convertMouseEventToCoordinates, convertRadiansToCoordinates, getBoundaries, getViewBox } from "./utilities";
 
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
@@ -73,14 +73,12 @@ export class RoundSlider extends LitElement {
   }
 
   private mouseEventToValue(event: TouchEvent | MouseEvent) {
-    const [mouseX, mouseY] = event instanceof MouseEvent
-      ? [event.clientX, event.clientY]
-      : [event.touches[0].clientX, event.touches[0].clientY];
+    const mouse = convertMouseEventToCoordinates(event);
 
     const bounds = this.getBoundaries();
-    const rect = this.svg.getBoundingClientRect();
-    const x = mouseX - (rect.left + (bounds.left * rect.width) / bounds.width);
-    const y = mouseY - (rect.top + (bounds.top * rect.height) / bounds.height);
+    const svg = this.svg.getBoundingClientRect();
+    const x = mouse.x - (svg.left + (bounds.left * svg.width) / bounds.width);
+    const y = mouse.y - (svg.top + (bounds.top * svg.height) / bounds.height);
     const radians = this.convertCoordinatesToRadians(x, y);
     return this.convertRadiansToValue(radians);
   }
