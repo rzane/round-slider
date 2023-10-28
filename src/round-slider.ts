@@ -167,7 +167,7 @@ export class RoundSlider extends LitElement {
         xmlns="http://www.w3.org/2000/svg"
         viewBox=${viewBox}
         focusable="false"
-        style="transform: rotate(${this.startAngle}deg)"
+        transform="rotate(${this.startAngle})"
       >
         <g class="slider">
           <path class="path" d=${path} />
@@ -184,6 +184,7 @@ export class RoundSlider extends LitElement {
           aria-valuemax=${this.max}
           aria-valuenow=${this.value}
           aria-label=${this.ariaLabel}
+          vector-effect="non-scaling-stroke"
         />
       </svg>
     `;
@@ -196,9 +197,8 @@ export class RoundSlider extends LitElement {
     }
 
     svg {
-      overflow: visible;
       display: block;
-      margin: 12px;
+      overflow: visible;
     }
 
     path {
