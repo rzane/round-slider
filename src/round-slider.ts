@@ -220,7 +220,7 @@ export class RoundSlider extends LitElement {
       fill: none;
       stroke: rgba(0, 0, 0, 0);
       stroke-width: 32;
-      stroke-linecap: butt;
+      stroke-linecap: round;
       vector-effect: non-scaling-stroke;
     }
 
