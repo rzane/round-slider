@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import {
   Context,
   pointToValue,
@@ -36,8 +36,6 @@ export class RoundSlider extends LitElement {
   public startAngle = 135;
 
   private isDragging = false;
-
-  @query("svg", true) svg!: SVGElement;
 
   constructor() {
     super();
@@ -80,11 +78,10 @@ export class RoundSlider extends LitElement {
 
   private mouseEventToValue(event: TouchEvent | MouseEvent) {
     const mouse = mouseEventToPoint(event);
-
     const bounds = getBoundaries(this.context);
-    const svg = this.svg.getBoundingClientRect();
-    const x = mouse.x - (svg.left + (bounds.left * svg.width) / bounds.width);
-    const y = mouse.y - (svg.top + (bounds.top * svg.height) / bounds.height);
+    const el = this.getBoundingClientRect();
+    const x = mouse.x - (el.left + (bounds.left * el.width) / bounds.width);
+    const y = mouse.y - (el.top + (bounds.top * el.height) / bounds.height);
     return pointToValue({ x, y }, this.context);
   }
 
