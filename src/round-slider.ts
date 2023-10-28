@@ -87,12 +87,12 @@ export class RoundSlider extends LitElement {
 
   private onDragStart = (event: TouchEvent | MouseEvent): void => {
     const target = event.target as SVGElement;
-    const isShadowpath = target.classList.contains("shadowpath");
+    const isTrackSlop = target.classList.contains("track--slop");
     const isThumb = target.classList.contains("thumb");
 
     if (isThumb) {
       this.isDragging = true;
-    } else if (isShadowpath) {
+    } else if (isTrackSlop) {
       this.isDragging = true;
       this.setValue(this.mouseEventToValue(event));
     }
@@ -171,7 +171,7 @@ export class RoundSlider extends LitElement {
       >
         <g>
           <path class="track" d=${path} />
-          <path class="shadowpath" d=${path} />
+          <path class="track--slop" d=${path} />
           <path class="progress" d=${progress} />
         </g>
 
@@ -203,43 +203,43 @@ export class RoundSlider extends LitElement {
 
     .track {
       fill: none;
-      stroke: #cbcbcb;
-      stroke-width: 3;
+      stroke: #ebebeb;
+      stroke-width: 4;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
     }
 
-    .shadowpath {
+    .track--slop {
       fill: none;
       stroke: rgba(0, 0, 0, 0);
-      stroke-width: 6;
+      stroke-width: 8;
       stroke-linecap: butt;
       vector-effect: non-scaling-stroke;
     }
 
     .progress {
       fill: none;
-      stroke: black;
-      stroke-width: 3;
+      stroke: #0a5aff;
+      stroke-width: 4;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
     }
 
+    .progress:hover {
+      stroke: #0545bc;
+    }
+
     .thumb {
-      stroke: black;
+      stroke: #0a5aff;
       stroke-linecap: round;
-      stroke-width: 24px;
+      stroke-width: 16;
       cursor: pointer;
-      transition:
-        stroke 200ms ease-out,
-        stroke-width 200ms ease-out;
       vector-effect: non-scaling-stroke;
     }
 
     .thumb:focus {
-      stroke: #545454;
-      stroke-width: 28px;
       outline: unset;
+      stroke: #0545bc;
     }
   `;
 }
