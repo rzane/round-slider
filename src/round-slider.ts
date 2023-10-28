@@ -170,7 +170,7 @@ export class RoundSlider extends LitElement {
         transform="rotate(${this.startAngle})"
       >
         <g>
-          <path class="path" d=${path} />
+          <path class="track" d=${path} />
           <path class="shadowpath" d=${path} />
           <path class="progress" d=${progress} />
         </g>
@@ -201,7 +201,7 @@ export class RoundSlider extends LitElement {
       overflow: visible;
     }
 
-    .path {
+    .track {
       fill: none;
       stroke: #cbcbcb;
       stroke-width: 3;
