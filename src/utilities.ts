@@ -1,5 +1,5 @@
-type Radians = number;
-type Degrees = number;
+export type Radians = number;
+export type Degrees = number;
 
 export interface Point {
   x: number;
@@ -17,8 +17,8 @@ export interface Context {
   min: number;
   max: number;
   step: number;
-  startRadians: Radians;
-  lengthRadians: Radians;
+  arc: Radians;
+  rotate: Radians;
 }
 
 export function degreesToRadians(degrees: Degrees) {
@@ -30,12 +30,12 @@ export function radiansToPoint(radians: Radians): Point {
 }
 
 export function isAngleOnArc(degrees: Degrees, ctx: Context): boolean {
-  return degreesToRadians(degrees) <= ctx.lengthRadians;
+  return degreesToRadians(degrees) <= ctx.arc;
 }
 
 export function getBoundaries(ctx: Context): Rectangle {
   const arcStart = radiansToPoint(0);
-  const arcEnd = radiansToPoint(ctx.lengthRadians);
+  const arcEnd = radiansToPoint(ctx.arc);
 
   const top = isAngleOnArc(270, ctx) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
   const bottom = isAngleOnArc(90, ctx) ? 1 : Math.max(arcStart.y, arcEnd.y);
@@ -60,15 +60,15 @@ export function mouseEventToPoint(event: MouseEvent | TouchEvent): Point {
 
 export function pointToValue({ x, y }: Point, ctx: Context): number {
   const normalizedRadians =
-    (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
+    (Math.atan2(y, x) - ctx.rotate + 8 * Math.PI) % (2 * Math.PI);
 
-  if (normalizedRadians > ctx.lengthRadians) {
-    const midpoint = Math.PI + ctx.lengthRadians / 2;
+  if (normalizedRadians > ctx.arc) {
+    const midpoint = Math.PI + ctx.arc / 2;
     return normalizedRadians > midpoint ? ctx.min : ctx.max;
   }
 
   const scaledValue =
-    (normalizedRadians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min;
+    (normalizedRadians / ctx.arc) * (ctx.max - ctx.min) + ctx.min;
 
   return Math.round(scaledValue / ctx.step) * ctx.step;
 }
@@ -76,7 +76,7 @@ export function pointToValue({ x, y }: Point, ctx: Context): number {
 export function valueToRadians(value: number, ctx: Context): Radians {
   value = Math.min(ctx.max, Math.max(ctx.min, value));
   const fraction = (value - ctx.min) / (ctx.max - ctx.min);
-  return fraction * ctx.lengthRadians;
+  return fraction * ctx.arc;
 }
 
 export function renderArc(startRadians: Radians, endRadians: Radians): string {

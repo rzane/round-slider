@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import {
   Context,
+  Degrees,
   pointToValue,
   degreesToRadians,
   mouseEventToPoint,
@@ -30,10 +31,10 @@ export class RoundSlider extends LitElement {
   public ariaLabel: string = "";
 
   @property({ type: Number })
-  public arcLength = 270;
+  public arc: Degrees = 270;
 
   @property({ type: Number })
-  public startAngle = 135;
+  public rotate: Degrees = 135;
 
   private isDragging = false;
 
@@ -58,21 +59,13 @@ export class RoundSlider extends LitElement {
     super.disconnectedCallback();
   }
 
-  private get startRadians(): number {
-    return degreesToRadians(this.startAngle);
-  }
-
-  private get lengthRadians(): number {
-    return Math.min(degreesToRadians(this.arcLength), 2 * Math.PI - 0.01);
-  }
-
   private get context(): Context {
     return {
       min: this.min,
       max: this.max,
       step: this.step,
-      lengthRadians: this.lengthRadians,
-      startRadians: this.startRadians,
+      arc: Math.min(degreesToRadians(this.arc), 2 * Math.PI - 0.01),
+      rotate: degreesToRadians(this.rotate),
     };
   }
 
@@ -144,7 +137,7 @@ export class RoundSlider extends LitElement {
   protected render() {
     const viewBox = getViewBox(this.context);
 
-    const track = renderArc(0, this.lengthRadians);
+    const track = renderArc(0, this.context.arc);
     const progress = renderArc(
       valueToRadians(this.min, this.context),
       valueToRadians(this.value, this.context),
@@ -161,7 +154,7 @@ export class RoundSlider extends LitElement {
         xmlns="http://www.w3.org/2000/svg"
         viewBox=${viewBox}
         focusable="false"
-        transform="rotate(${this.startAngle})"
+        transform="rotate(${this.rotate})"
       >
         <g>
           <path class="track" part="track" d=${track} />
