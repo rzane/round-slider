@@ -44,15 +44,15 @@ export class RoundSlider extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    document.addEventListener("mouseup", this.onDragEnd);
-    document.addEventListener("touchend", this.onDragEnd, { passive: false });
+    document.addEventListener("mouseup", this.onRelease);
+    document.addEventListener("touchend", this.onRelease, { passive: false });
     document.addEventListener("mousemove", this.onDrag);
     document.addEventListener("touchmove", this.onDrag, { passive: false });
   }
 
   disconnectedCallback(): void {
-    document.removeEventListener("mouseup", this.onDragEnd);
-    document.removeEventListener("touchend", this.onDragEnd);
+    document.removeEventListener("mouseup", this.onRelease);
+    document.removeEventListener("touchend", this.onRelease);
     document.removeEventListener("mousemove", this.onDrag);
     document.removeEventListener("touchmove", this.onDrag);
     super.disconnectedCallback();
@@ -85,7 +85,7 @@ export class RoundSlider extends LitElement {
     return pointToValue({ x, y }, this.context);
   }
 
-  private onDragStart = (event: TouchEvent | MouseEvent): void => {
+  private onPress = (event: TouchEvent | MouseEvent): void => {
     const target = event.target as SVGElement;
     const isTrackSlop = target.classList.contains("track--slop");
     const isThumb = target.classList.contains("thumb");
@@ -105,7 +105,7 @@ export class RoundSlider extends LitElement {
     }
   };
 
-  private onDragEnd = (_event: MouseEvent | TouchEvent): void => {
+  private onRelease = (_event: MouseEvent | TouchEvent): void => {
     if (this.isDragging) {
       this.isDragging = false;
       this.emit("change");
@@ -162,8 +162,8 @@ export class RoundSlider extends LitElement {
 
     return html`
       <svg
-        @mousedown=${this.onDragStart}
-        @touchstart=${this.onDragStart}
+        @mousedown=${this.onPress}
+        @touchstart=${this.onPress}
         xmlns="http://www.w3.org/2000/svg"
         viewBox=${viewBox}
         focusable="false"
