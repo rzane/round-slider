@@ -91,9 +91,9 @@ export class RoundSlider extends LitElement {
   private onDragStart = (event: TouchEvent | MouseEvent): void => {
     const target = event.target as SVGElement;
     const isShadowpath = target.classList.contains("shadowpath");
-    const isHandle = target.classList.contains("handle");
+    const isThumb = target.classList.contains("thumb");
 
-    if (isHandle) {
+    if (isThumb) {
       this.isDragging = true;
     } else if (isShadowpath) {
       this.isDragging = true;
@@ -158,7 +158,7 @@ export class RoundSlider extends LitElement {
     );
 
     const point = radiansToPoint(valueToRadians(this.value, this.context));
-    const handle = `
+    const thumb = `
       M ${point.x} ${point.y}
       L ${point.x + 0.001} ${point.y + 0.001}
     `;
@@ -174,13 +174,13 @@ export class RoundSlider extends LitElement {
       >
         <g class="slider">
           <path class="path" d=${path} />
-          <path class="progress" d=${progress} />
           <path class="shadowpath" d=${path} />
+          <path class="progress" d=${progress} />
         </g>
 
         <path
-          class="handle"
-          d=${handle}
+          class="thumb"
+          d=${thumb}
           tabindex="0"
           role="slider"
           aria-valuemin=${this.min}
@@ -218,17 +218,17 @@ export class RoundSlider extends LitElement {
       stroke: #cbcbcb;
     }
 
+    .shadowpath {
+      stroke: rgba(0, 0, 0, 0);
+      stroke-width: 36px;
+      stroke-linecap: butt;
+    }
+
     .progress {
       stroke: black;
     }
 
-    .shadowpath {
-      stroke-width: 36px;
-      stroke: rgba(0, 0, 0, 0);
-      stroke-linecap: butt;
-    }
-
-    .handle {
+    .thumb {
       stroke: black;
       stroke-linecap: round;
       stroke-width: 24px;
@@ -238,7 +238,7 @@ export class RoundSlider extends LitElement {
         stroke-width 200ms ease-out;
     }
 
-    .handle:focus {
+    .thumb:focus {
       stroke: #545454;
       stroke-width: 28px;
       outline: unset;
