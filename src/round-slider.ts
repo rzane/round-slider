@@ -170,13 +170,14 @@ export class RoundSlider extends LitElement {
         transform="rotate(${this.startAngle})"
       >
         <g>
-          <path class="track" d=${path} />
+          <path class="track" part="track" d=${path} />
           <path class="track--slop" d=${path} />
-          <path class="progress" d=${progress} />
+          <path class="progress" part="progress" d=${progress} />
         </g>
 
         <path
           class="thumb"
+          part="thumb"
           d=${thumb}
           tabindex="0"
           role="slider"
@@ -184,7 +185,6 @@ export class RoundSlider extends LitElement {
           aria-valuemax=${this.max}
           aria-valuenow=${this.value}
           aria-label=${this.ariaLabel}
-          vector-effect="non-scaling-stroke"
         />
       </svg>
     `;
@@ -204,7 +204,7 @@ export class RoundSlider extends LitElement {
     .track {
       fill: none;
       stroke: #ebebeb;
-      stroke-width: 4;
+      stroke-width: 8;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
     }
@@ -212,7 +212,7 @@ export class RoundSlider extends LitElement {
     .track--slop {
       fill: none;
       stroke: rgba(0, 0, 0, 0);
-      stroke-width: 8;
+      stroke-width: 16;
       stroke-linecap: butt;
       vector-effect: non-scaling-stroke;
     }
@@ -220,7 +220,7 @@ export class RoundSlider extends LitElement {
     .progress {
       fill: none;
       stroke: #0a5aff;
-      stroke-width: 4;
+      stroke-width: 8;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
     }
