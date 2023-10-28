@@ -85,17 +85,13 @@ export class RoundSlider extends LitElement {
     return pointToValue({ x, y }, this.context);
   }
 
-  private onPress = (event: TouchEvent | MouseEvent): void => {
-    const target = event.target as SVGElement;
-    const isTrackSlop = target.classList.contains("track--slop");
-    const isThumb = target.classList.contains("thumb");
+  private onPressThumb = (): void => {
+    this.isDragging = true;
+  };
 
-    if (isThumb) {
-      this.isDragging = true;
-    } else if (isTrackSlop) {
-      this.isDragging = true;
-      this.setValue(this.mouseEventToValue(event));
-    }
+  private onPressTrack = (event: TouchEvent | MouseEvent): void => {
+    this.isDragging = true;
+    this.setValue(this.mouseEventToValue(event));
   };
 
   private onDrag = (event: TouchEvent | MouseEvent): void => {
@@ -162,8 +158,6 @@ export class RoundSlider extends LitElement {
 
     return html`
       <svg
-        @mousedown=${this.onPress}
-        @touchstart=${this.onPress}
         xmlns="http://www.w3.org/2000/svg"
         viewBox=${viewBox}
         focusable="false"
@@ -171,8 +165,13 @@ export class RoundSlider extends LitElement {
       >
         <g>
           <path class="track" part="track" d=${path} />
-          <path class="track--slop" d=${path} />
           <path class="progress" part="progress" d=${progress} />
+          <path
+            class="track--slop"
+            d=${path}
+            @mousedown=${this.onPressTrack}
+            @touchstart=${this.onPressTrack}
+          />
         </g>
 
         <path
@@ -185,6 +184,8 @@ export class RoundSlider extends LitElement {
           aria-valuemax=${this.max}
           aria-valuenow=${this.value}
           aria-label=${this.ariaLabel}
+          @mousedown=${this.onPressThumb}
+          @touchstart=${this.onPressThumb}
         />
       </svg>
     `;
@@ -212,7 +213,7 @@ export class RoundSlider extends LitElement {
     .track--slop {
       fill: none;
       stroke: rgba(0, 0, 0, 0);
-      stroke-width: 16;
+      stroke-width: 32;
       stroke-linecap: butt;
       vector-effect: non-scaling-stroke;
     }
