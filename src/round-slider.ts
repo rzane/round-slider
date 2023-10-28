@@ -144,7 +144,7 @@ export class RoundSlider extends LitElement {
   protected render() {
     const viewBox = getViewBox(this.context);
 
-    const path = renderArc(0, this.lengthRadians);
+    const track = renderArc(0, this.lengthRadians);
     const progress = renderArc(
       valueToRadians(this.min, this.context),
       valueToRadians(this.value, this.context),
@@ -164,11 +164,11 @@ export class RoundSlider extends LitElement {
         transform="rotate(${this.startAngle})"
       >
         <g>
-          <path class="track" part="track" d=${path} />
+          <path class="track" part="track" d=${track} />
           <path class="progress" part="progress" d=${progress} />
           <path
             class="track--slop"
-            d=${path}
+            d=${track}
             @mousedown=${this.onPressTrack}
             @touchstart=${this.onPressTrack}
           />
