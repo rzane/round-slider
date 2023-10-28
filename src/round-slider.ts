@@ -174,19 +174,25 @@ export class RoundSlider extends LitElement {
           />
         </g>
 
-        <path
-          class="thumb"
-          part="thumb"
-          d=${thumb}
-          tabindex="0"
-          role="slider"
-          aria-valuemin=${this.min}
-          aria-valuemax=${this.max}
-          aria-valuenow=${this.value}
-          aria-label=${this.ariaLabel}
-          @mousedown=${this.onPressThumb}
-          @touchstart=${this.onPressThumb}
-        />
+        <g>
+          <path
+            class="thumb"
+            part="thumb"
+            d=${thumb}
+            tabindex="0"
+            role="slider"
+            aria-valuemin=${this.min}
+            aria-valuemax=${this.max}
+            aria-valuenow=${this.value}
+            aria-label=${this.ariaLabel}
+          />
+          <path
+            class="thumb--slop"
+            d=${thumb}
+            @mousedown=${this.onPressThumb}
+            @touchstart=${this.onPressThumb}
+          />
+        </g>
       </svg>
     `;
   }
@@ -232,15 +238,21 @@ export class RoundSlider extends LitElement {
 
     .thumb {
       stroke: #0a5aff;
-      stroke-linecap: round;
       stroke-width: 16;
-      cursor: pointer;
+      stroke-linecap: round;
       vector-effect: non-scaling-stroke;
     }
 
     .thumb:focus {
       outline: unset;
       stroke: #0545bc;
+    }
+
+    .thumb--slop {
+      stroke: rgba(0, 0, 0, 0);
+      stroke-width: 32;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
     }
   `;
 }
