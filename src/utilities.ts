@@ -62,6 +62,11 @@ export function pointToValue({ x, y }: Point, ctx: Context): number {
   const normalizedRadians =
     (Math.atan2(y, x) - ctx.startRadians + 8 * Math.PI) % (2 * Math.PI);
 
+  if (normalizedRadians > ctx.lengthRadians) {
+    const midpoint = Math.PI + ctx.lengthRadians / 2;
+    return normalizedRadians > midpoint ? ctx.min : ctx.max;
+  }
+
   const scaledValue =
     (normalizedRadians / ctx.lengthRadians) * (ctx.max - ctx.min) + ctx.min;
 
