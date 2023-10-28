@@ -150,14 +150,18 @@ export class RoundSlider extends LitElement {
 
   protected render() {
     const viewBox = getViewBox(this.context);
-    const handle = radiansToPoint(valueToRadians(this.value, this.context));
 
     const path = renderArc(0, this.lengthRadians);
-
-    const bar = renderArc(
+    const progress = renderArc(
       valueToRadians(this.min, this.context),
       valueToRadians(this.value, this.context),
     );
+
+    const point = radiansToPoint(valueToRadians(this.value, this.context));
+    const handle = `
+      M ${point.x} ${point.y}
+      L ${point.x + 0.001} ${point.y + 0.001}
+    `;
 
     return html`
       <svg
@@ -170,14 +174,13 @@ export class RoundSlider extends LitElement {
       >
         <g class="slider">
           <path class="path" d=${path} />
-          <path class="bar" d=${bar} />
+          <path class="progress" d=${progress} />
           <path class="shadowpath" d=${path} />
         </g>
 
         <path
           class="handle"
-          d="M ${handle.x} ${handle.y} L ${handle.x + 0.001} ${handle.y +
-      0.001}"
+          d=${handle}
           tabindex="0"
           role="slider"
           aria-valuemin=${this.min}
@@ -215,7 +218,7 @@ export class RoundSlider extends LitElement {
       stroke: #cbcbcb;
     }
 
-    .bar {
+    .progress {
       stroke: black;
     }
 
