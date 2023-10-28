@@ -169,7 +169,7 @@ export class RoundSlider extends LitElement {
         focusable="false"
         transform="rotate(${this.startAngle})"
       >
-        <g class="slider">
+        <g>
           <path class="path" d=${path} />
           <path class="shadowpath" d=${path} />
           <path class="progress" d=${progress} />
@@ -201,28 +201,28 @@ export class RoundSlider extends LitElement {
       overflow: visible;
     }
 
-    path {
+    .path {
+      fill: none;
+      stroke: #cbcbcb;
+      stroke-width: 3;
+      stroke-linecap: round;
       vector-effect: non-scaling-stroke;
     }
 
-    .slider {
-      fill: none;
-      stroke-width: 3;
-      stroke-linecap: round;
-    }
-
-    .path {
-      stroke: #cbcbcb;
-    }
-
     .shadowpath {
+      fill: none;
       stroke: rgba(0, 0, 0, 0);
-      stroke-width: 36px;
+      stroke-width: 6;
       stroke-linecap: butt;
+      vector-effect: non-scaling-stroke;
     }
 
     .progress {
+      fill: none;
       stroke: black;
+      stroke-width: 3;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
     }
 
     .thumb {
@@ -233,6 +233,7 @@ export class RoundSlider extends LitElement {
       transition:
         stroke 200ms ease-out,
         stroke-width 200ms ease-out;
+      vector-effect: non-scaling-stroke;
     }
 
     .thumb:focus {
