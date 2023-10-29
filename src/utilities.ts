@@ -30,12 +30,16 @@ export function radiansToPoint(radians: Radians): Point {
 }
 
 function isAngleOnArc(degrees: Degrees, ctx: Context): boolean {
-  return degreesToRadians(degrees) <= ctx.arc;
+  const radians = degreesToRadians(degrees)
+  const epsilon = 1e-10;
+  const middle = ctx.arc / 2;
+  const delta = ((ctx.rotate + middle - radians + Math.PI + 2 * Math.PI) % (2 * Math.PI)) - Math.PI;
+  return Math.abs(delta) <= middle + epsilon;
 }
 
 export function getBoundaries(ctx: Context): Rectangle {
-  const arcStart = radiansToPoint(0);
-  const arcEnd = radiansToPoint(ctx.arc);
+  const arcStart = radiansToPoint(ctx.rotate);
+  const arcEnd = radiansToPoint(ctx.rotate + ctx.arc);
 
   const top = isAngleOnArc(270, ctx) ? 1 : Math.max(-arcStart.y, -arcEnd.y);
   const bottom = isAngleOnArc(90, ctx) ? 1 : Math.max(arcStart.y, arcEnd.y);
@@ -76,7 +80,8 @@ export function pointToValue({ x, y }: Point, ctx: Context): number {
 
 export function valueToRadians(value: number, ctx: Context): Radians {
   const clampedValue = Math.min(ctx.max, Math.max(ctx.min, value));
-  return ((clampedValue - ctx.min) / (ctx.max - ctx.min)) * ctx.arc;
+  const fraction = ((clampedValue - ctx.min) / (ctx.max - ctx.min));
+  return ctx.rotate + fraction * ctx.arc;
 }
 
 export function renderArc(startRadians: Radians, endRadians: Radians): string {

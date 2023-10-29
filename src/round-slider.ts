@@ -155,7 +155,11 @@ export class RoundSlider extends LitElement {
   protected render() {
     const viewBox = getViewBox(this.context);
 
-    const track = renderArc(0, this.context.arc);
+    const track = renderArc(
+      this.context.rotate,
+      this.context.rotate + this.context.arc,
+    );
+
     const progress = renderArc(
       valueToRadians(this.min, this.context),
       valueToRadians(this.value, this.context),
@@ -172,7 +176,6 @@ export class RoundSlider extends LitElement {
         xmlns="http://www.w3.org/2000/svg"
         viewBox=${viewBox}
         focusable="false"
-        transform="rotate(${this.rotate})"
       >
         <g>
           <path class="track" part="track" d=${track} />

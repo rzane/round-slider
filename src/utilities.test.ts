@@ -47,6 +47,7 @@ test("getBoundaries", () => {
 test("getViewBox", () => {
   expect(getViewBox(ctx(360))).toEqual("-1 -1 2 2");
   expect(getViewBox(ctx(270))).toEqual("-1 -1 2 2");
+  expect(getViewBox(ctx(270, 135))).toEqual("-1 -1 2 1.7071067811865475");
   expect(getViewBox(ctx(180))).toEqual("-1 0 2 1");
   expect(getViewBox(ctx(90))).toEqual(
     "6.123233995736766e-17 0 0.9999999999999999 1",
