@@ -1,7 +1,6 @@
 {
   "name": "@rzane/round-slider",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "files": [
     "dist"
@@ -18,7 +17,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "test": "vitest",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+    "prepublishOnly": "tsc && vite build"
   },
   "devDependencies": {
     "prettier": "^3.0.3",
