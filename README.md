@@ -1,59 +1,48 @@
-# round-slider
+# @rzane/round-slider
 
-A simple round slider webcomponent - [demo](https://rawcdn.githack.com/thomasloven/round-slider/master/example.html)
-
-![single](https://user-images.githubusercontent.com/1299821/64284907-e48d9100-cf5a-11e9-99ed-07afbfb1eada.png)
+This is a circular range input implemented as a web component.
 
 ## Properties
 
-- `value` - Required for single slider
-- `low` - Required for high/low slider
-- `high` - Required for high/low slider
-
+- `value` - The value of the slider
 - `min` - Lower limit of values
 - `max` - Higher limit of values
 - `step` - Step size of slider
-
-- `startAngle` - Angle in degrees at which slider bar starts (default: 135)
-- `arcLength` - Length in degrees of slider bar (default: 270)
-
-- `handleSize` - Radius of handle in pixels (default: 6)
-- `handleZoom` - The factor the handle size scales when dragged (default: 1.5)
+- `arc` - Length in degrees of slider bar (default: 270)
+- `rotate` - Rotate the slider by a number of degrees (default: 135)
 - `disabled` - Boolean property disabling the slider (default: false)
-- `readonly` - Boolean property disabling slider events (default: false)
-- `rtl` - Boolean property to have the slider move Right to Left (default: false)
-
-- `valueLabel` - Value to apply to `aria-label` property of value handle
-- `lowLabel` - Value to apply to `aria-label` property of low handle
-- `highLabel` - Value to apply to `aria-label` property of high handle
-
-- `outside` - if true a high/low slider will fill up from the outsides in of inside out (default: false)
+- `aria-label` - Provides an accessible label
 
 ## Events
 
 The slider dispatches two events
 
-- `value-changing` when the value is changed but the mouse button is still pressed
-- `value-changed` on release of mouse button
+- `input` - Emitted as the value is changing
+- `change` Emitted when the value changes
 
-Both events pass an object as `detail` with either `value`, `low`, or `high` set to the new value depending on which slider was pulled.
+You can get the slider's value from the `event.target.value`.
 
 ## CSS styles
 
 The following css variables can be used to change the styles:
 
-- `--round-slider-path-color` - color of bar path
-- `--round-slider-bar-color` - color of bar
-- `--round-slider-handle-color` - color of handles
-- `--round-slider-low-handle-color` - color of low handle (overrides `--round-slider-handle-color`)
-- `--round-slider-high-handle-color` - color of high handle (overrides `--round-slider-handle-color`)
-- `--round-slider-low-bar-color` - color of low bar when `outside` is true (overrides `--round-slider-bar-color`)
-- `--round-slider-high-bar-color` - color of high bar when `outside` is true (overrides `--round-slider-bar-color`)
-- `--round-slider-handle-cursor` - cursor to use on the handles (default `pointer`)
-- `--round-slider-path-width` - bar width in pixels (default: 3)
-- `--round-slider-linecap` - svg linecaps of bar (default: `round`)
+- `--color` - color of the foreground
+- `--bg-color` - color of background
 
-## Examples
+Custom styles can be applied to some of the elements within the slider using the `::part()` pseudo-element.
 
-See [example.html](https://rawcdn.githack.com/thomasloven/round-slider/master/example.html) for usage examples.
-![Examples](https://user-images.githubusercontent.com/1299821/64284861-c9bb1c80-cf5a-11e9-830f-11951f84596d.png)
+```css
+round-slider::part(track) {}
+round-slider::part(progress) {}
+round-slider::part(thumb) {}
+```
+
+## Prior Art
+
+This package is a fork of [thomasloven/round-slider](https://github.com/thomasloven/round-slider), with a few differences.
+
+* Clicking on the slider's progress immediately moves the handle to that point.
+* It was difficult to select the min/max values, so I added some custom snapping logic.
+* The slider should remain focused after dragging the slider.
+* I wanted more flexibility with regard to styling.
+* I removed support for functionality that I don't personally need.
