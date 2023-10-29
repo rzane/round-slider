@@ -59,18 +59,15 @@ export function mouseEventToPoint(event: MouseEvent | TouchEvent): Point {
 }
 
 export function pointToValue({ x, y }: Point, ctx: Context): number {
-  const normalizedRadians =
-    (Math.atan2(y, x) - ctx.rotate + 8 * Math.PI) % (2 * Math.PI);
+  const radians = (Math.atan2(y, x) - ctx.rotate + 8 * Math.PI) % (2 * Math.PI);
+  const scaledValue = (radians / ctx.arc) * (ctx.max - ctx.min) + ctx.min;
+  const value = Math.round(scaledValue / ctx.step) * ctx.step;
 
-  if (normalizedRadians > ctx.arc) {
-    const midpoint = Math.PI + ctx.arc / 2;
-    return normalizedRadians > midpoint ? ctx.min : ctx.max;
+  if (value > ctx.max) {
+    return radians > Math.PI + ctx.arc / 2 ? ctx.min : ctx.max;
+  } else {
+    return value;
   }
-
-  const scaledValue =
-    (normalizedRadians / ctx.arc) * (ctx.max - ctx.min) + ctx.min;
-
-  return Math.round(scaledValue / ctx.step) * ctx.step;
 }
 
 export function valueToRadians(value: number, ctx: Context): Radians {
