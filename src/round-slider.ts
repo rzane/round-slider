@@ -37,6 +37,9 @@ export class RoundSlider extends LitElement {
   @property({ type: Number })
   public rotate: Degrees = 135;
 
+  @property({ type: Boolean })
+  public disabled: boolean = false;
+
   private isDragging = false;
   private previousValue = this.value;
 
@@ -125,7 +128,7 @@ export class RoundSlider extends LitElement {
   };
 
   private setValue(value: number): void {
-    if (value !== this.value && value >= this.min && value <= this.max) {
+    if (value !== this.value && value >= this.min && value <= this.max && !this.disabled) {
       this.value = value;
       this.emit("input");
     }
@@ -186,6 +189,7 @@ export class RoundSlider extends LitElement {
             aria-valuemax=${this.max}
             aria-valuenow=${this.value}
             aria-label=${this.ariaLabel}
+            aria-disabled=${this.disabled}
           />
           <path
             class="thumb--slop"
@@ -254,6 +258,11 @@ export class RoundSlider extends LitElement {
       stroke-width: 32;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
+    }
+
+    :host[disabled]::part(thumb),
+    :host[disabled]::part(progress) {
+      stroke: #bfbfbf;
     }
   `;
 }
