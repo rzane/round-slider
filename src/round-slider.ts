@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import { createRef, ref } from "lit/directives/ref.js";
 import { customElement, property } from "lit/decorators.js";
 import {
   Context,
@@ -42,6 +43,7 @@ export class RoundSlider extends LitElement {
 
   private isDragging = false;
   private previousValue = this.value;
+  private svg = createRef<HTMLElement>();
 
   constructor() {
     super();
@@ -77,9 +79,9 @@ export class RoundSlider extends LitElement {
   private mouseEventToValue(event: TouchEvent | MouseEvent) {
     const mouse = mouseEventToPoint(event);
     const bounds = getBoundaries(this.context);
-    const el = this.getBoundingClientRect();
-    const x = mouse.x - (el.left + (bounds.left * el.width) / bounds.width);
-    const y = mouse.y - (el.top + (bounds.top * el.height) / bounds.height);
+    const svg = this.svg.value.getBoundingClientRect();
+    const x = mouse.x - (svg.left + (bounds.left * svg.width) / bounds.width);
+    const y = mouse.y - (svg.top + (bounds.top * svg.height) / bounds.height);
     return pointToValue({ x, y }, this.context);
   }
 
@@ -176,6 +178,7 @@ export class RoundSlider extends LitElement {
         xmlns="http://www.w3.org/2000/svg"
         viewBox=${viewBox}
         focusable="false"
+        ${ref(this.svg)}
       >
         <g>
           <path class="track" part="track" d=${track} />
