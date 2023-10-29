@@ -11,6 +11,7 @@ import {
   getBoundaries,
   getViewBox,
   renderArc,
+  isValidPress,
 } from "./utilities";
 
 @customElement("round-slider")
@@ -79,13 +80,17 @@ export class RoundSlider extends LitElement {
     return pointToValue({ x, y }, this.context);
   }
 
-  private onPressThumb = (): void => {
-    this.isDragging = true;
+  private onPressThumb = (event: TouchEvent | MouseEvent): void => {
+    if (isValidPress(event)) {
+      this.isDragging = true;
+    }
   };
 
   private onPressTrack = (event: TouchEvent | MouseEvent): void => {
-    this.isDragging = true;
-    this.setValue(this.mouseEventToValue(event));
+    if (isValidPress(event)) {
+      this.isDragging = true;
+      this.setValue(this.mouseEventToValue(event));
+    }
   };
 
   private onDrag = (event: TouchEvent | MouseEvent): void => {

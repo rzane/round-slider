@@ -50,6 +50,10 @@ export function getViewBox(ctx: Context) {
   return `${-left} ${-top} ${width} ${height}`;
 }
 
+export function isValidPress(event: MouseEvent | TouchEvent): boolean {
+  return !(event instanceof MouseEvent && event.button !== 0);
+}
+
 export function mouseEventToPoint(event: MouseEvent | TouchEvent): Point {
   if (event instanceof MouseEvent) {
     return { x: event.clientX, y: event.clientY };
