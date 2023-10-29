@@ -216,7 +216,9 @@ export class RoundSlider extends LitElement {
     :host {
       --color: #0a5aff;
       --bg-color: #ebebeb;
-      --slop: 32;
+      --track-size: 8px;
+      --thumb-size: 16px;
+      --slop-size: 32px;
 
       display: inline-block;
       width: 100%;
@@ -233,6 +235,7 @@ export class RoundSlider extends LitElement {
     svg {
       display: block;
       overflow: visible;
+      margin: calc(var(--thumb-size) / 2);
     }
 
     .track,
@@ -247,17 +250,17 @@ export class RoundSlider extends LitElement {
 
     .track {
       stroke: var(--bg-color);
-      stroke-width: 8;
+      stroke-width: var(--track-size);
     }
 
     .progress {
       stroke: var(--color);
-      stroke-width: 8;
+      stroke-width: var(--track-size);
     }
 
     .thumb {
       stroke: var(--color);
-      stroke-width: 16;
+      stroke-width: var(--thumb-size);
     }
 
     .thumb:focus {
@@ -267,7 +270,7 @@ export class RoundSlider extends LitElement {
     .track--slop,
     .thumb--slop {
       stroke: rgba(0, 0, 0, 0);
-      stroke-width: var(--slop);
+      stroke-width: var(--slop-size);
     }
   `;
 }

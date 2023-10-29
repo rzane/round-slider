@@ -28,6 +28,9 @@ The following css variables can be used to change the styles:
 
 - `--color` - color of the foreground
 - `--bg-color` - color of background
+- `--track-size` - controls the size of the track
+- `--thumb-size` - controls the size of the thumb
+- `--slop-size` - controls the size of the hit area
 
 Custom styles can be applied to some of the elements within the slider using the `::part()` pseudo-element.
 

@@ -10,11 +10,13 @@
       round-slider {
         max-width: 200px;
         transition: all 1.3s ease-out 0s;
-        padding: 0 1em;
+        margin: 0 1em;
+        border: 1px solid #eee;
       }
 
       .styled {
         --color: #65a30d;
+        --track-size: 2px;
       }
       .styled:hover {
         --color: #4d7c0f;
@@ -23,12 +25,8 @@
         --color: #737373;
       }
 
-      .styled::part(track) {
-        stroke-width: 2;
-      }
-      .styled::part(progress) {
-        stroke-width: 2;
-      }
+      .styled::part(track) {}
+      .styled::part(progress) {}
       .styled::part(thumb) {
         stroke-linecap: square;
       }
