@@ -71,9 +71,8 @@ export function pointToValue({ x, y }: Point, ctx: Context): number {
 }
 
 export function valueToRadians(value: number, ctx: Context): Radians {
-  value = Math.min(ctx.max, Math.max(ctx.min, value));
-  const fraction = (value - ctx.min) / (ctx.max - ctx.min);
-  return fraction * ctx.arc;
+  const clampedValue = Math.min(ctx.max, Math.max(ctx.min, value));
+  return (clampedValue - ctx.min) / (ctx.max - ctx.min) * ctx.arc;
 }
 
 export function renderArc(startRadians: Radians, endRadians: Radians): string {
