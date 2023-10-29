@@ -204,8 +204,19 @@ export class RoundSlider extends LitElement {
 
   static styles = css`
     :host {
+      --color: #0a5aff;
+      --bg-color: #ebebeb;
+
       display: inline-block;
       width: 100%;
+    }
+
+    :host(:hover) {
+      --color: #0545bc;
+    }
+
+    :host([disabled]) {
+      --color: #bfbfbf;
     }
 
     svg {
@@ -215,7 +226,7 @@ export class RoundSlider extends LitElement {
 
     .track {
       fill: none;
-      stroke: #ebebeb;
+      stroke: var(--bg-color);
       stroke-width: 8;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
@@ -231,18 +242,14 @@ export class RoundSlider extends LitElement {
 
     .progress {
       fill: none;
-      stroke: #0a5aff;
+      stroke: var(--color);
       stroke-width: 8;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
     }
 
-    .progress:hover {
-      stroke: #0545bc;
-    }
-
     .thumb {
-      stroke: #0a5aff;
+      stroke: var(--color);
       stroke-width: 16;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
@@ -250,7 +257,6 @@ export class RoundSlider extends LitElement {
 
     .thumb:focus {
       outline: unset;
-      stroke: #0545bc;
     }
 
     .thumb--slop {
@@ -258,11 +264,6 @@ export class RoundSlider extends LitElement {
       stroke-width: 32;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
-    }
-
-    :host[disabled]::part(thumb),
-    :host[disabled]::part(progress) {
-      stroke: #bfbfbf;
     }
   `;
 }

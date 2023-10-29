@@ -13,20 +13,22 @@
         padding: 0 1em;
       }
 
+      .styled { --color: #65a30d; }
+      .styled:hover { --color: #4d7c0f; }
+      .styled[disabled] { --color: #737373; }
+
       .styled::part(track) { stroke-width: 2; }
-      .styled::part(progress) { stroke: black; stroke-width: 2; }
-      .styled::part(thumb) { stroke: black }
+      .styled::part(progress) { stroke-width: 2; }
+      .styled::part(thumb) { stroke-linecap: square; }
     </style>
 
     <h2>Default (<span class="value">50</span>)</h2>
     <round-slider value="50" aria-label="Temperature"></round-slider>
+    <round-slider value="50" disabled></round-slider>
 
     <h2>Styling (<span class="value">50</span>)</h2>
     <round-slider value="50" class="styled"></round-slider>
-
-    <!-- FIXME -->
-    <h2>Disabled</h2>
-    <round-slider value="50" disabled></round-slider>
+    <round-slider value="50" class="styled" disabled></round-slider>
 
     <h2>Shapes (<span class="value">50</span>)</h2>
     <round-slider value="50" arc="90" rotate="180"></round-slider>
