@@ -128,7 +128,12 @@ export class RoundSlider extends LitElement {
   };
 
   private setValue(value: number): void {
-    if (value !== this.value && value >= this.min && value <= this.max && !this.disabled) {
+    if (
+      value !== this.value &&
+      value >= this.min &&
+      value <= this.max &&
+      !this.disabled
+    ) {
       this.value = value;
       this.emit("input");
     }
@@ -142,7 +147,9 @@ export class RoundSlider extends LitElement {
   }
 
   private emit(name: string) {
-    this.dispatchEvent(new CustomEvent(name, { bubbles: true, composed: true }));
+    this.dispatchEvent(
+      new CustomEvent(name, { bubbles: true, composed: true }),
+    );
   }
 
   protected render() {

@@ -29,7 +29,7 @@ export function radiansToPoint(radians: Radians): Point {
   return { x: Math.cos(radians), y: Math.sin(radians) };
 }
 
-export function isAngleOnArc(degrees: Degrees, ctx: Context): boolean {
+function isAngleOnArc(degrees: Degrees, ctx: Context): boolean {
   return degreesToRadians(degrees) <= ctx.arc;
 }
 
@@ -76,7 +76,7 @@ export function pointToValue({ x, y }: Point, ctx: Context): number {
 
 export function valueToRadians(value: number, ctx: Context): Radians {
   const clampedValue = Math.min(ctx.max, Math.max(ctx.min, value));
-  return (clampedValue - ctx.min) / (ctx.max - ctx.min) * ctx.arc;
+  return ((clampedValue - ctx.min) / (ctx.max - ctx.min)) * ctx.arc;
 }
 
 export function renderArc(startRadians: Radians, endRadians: Radians): string {

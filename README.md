@@ -32,17 +32,20 @@ The following css variables can be used to change the styles:
 Custom styles can be applied to some of the elements within the slider using the `::part()` pseudo-element.
 
 ```css
-round-slider::part(track) {}
-round-slider::part(progress) {}
-round-slider::part(thumb) {}
+round-slider::part(track) {
+}
+round-slider::part(progress) {
+}
+round-slider::part(thumb) {
+}
 ```
 
 ## Prior Art
 
 This package is a fork of [thomasloven/round-slider](https://github.com/thomasloven/round-slider), with a few differences.
 
-* Clicking on the slider's progress immediately moves the handle to that point.
-* It was difficult to select the min/max values, so I added some custom snapping logic.
-* The slider should remain focused after dragging the slider.
-* I wanted more flexibility with regard to styling.
-* I removed support for functionality that I don't personally need.
+- Clicking on the slider's progress immediately moves the handle to that point.
+- It was difficult to select the min/max values, so I added some custom snapping logic.
+- The slider should remain focused after dragging the slider.
+- I wanted more flexibility with regard to styling.
+- I removed support for functionality that I don't personally need.
