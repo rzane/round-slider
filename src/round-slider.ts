@@ -219,6 +219,7 @@ export class RoundSlider extends LitElement {
       --track-size: 8px;
       --thumb-size: 16px;
       --slop-size: 32px;
+      --clearance: calc(var(--thumb-size) / 2);
 
       display: inline-block;
       width: 100%;
@@ -235,7 +236,7 @@ export class RoundSlider extends LitElement {
     svg {
       display: block;
       overflow: visible;
-      margin: calc(var(--thumb-size) / 2);
+      margin: var(--clearance);
     }
 
     .track,

@@ -31,6 +31,7 @@ The following css variables can be used to change the styles:
 - `--track-size` - controls the size of the track
 - `--thumb-size` - controls the size of the thumb
 - `--slop-size` - controls the size of the hit area
+- `--clearance` - controls the spacing between the arc and the surrounding box
 
 Custom styles can be applied to some of the elements within the slider using the `::part()` pseudo-element.
 
