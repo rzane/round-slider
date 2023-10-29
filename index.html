@@ -12,37 +12,23 @@
         transition: all 1.3s ease-out 0s;
         padding: 0 1em;
       }
+
+      .styled::part(track) { stroke-width: 2; }
+      .styled::part(progress) { stroke: black; stroke-width: 2; }
+      .styled::part(thumb) { stroke: black }
     </style>
 
     <h2>Default (<span class="value">50</span>)</h2>
     <round-slider value="50" aria-label="Temperature"></round-slider>
 
-    <!-- FIXME -->
     <h2>Styling (<span class="value">50</span>)</h2>
-    <round-slider
-      value="50"
-      style="--round-slider-path-color: red"
-    ></round-slider>
-    <round-slider
-      value="50"
-      style="--round-slider-bar-color: red"
-    ></round-slider>
-    <round-slider
-      value="50"
-      style="--round-slider-handle-color: red"
-    ></round-slider>
+    <round-slider value="50" class="styled"></round-slider>
 
     <!-- FIXME -->
     <h2>Disabled</h2>
     <round-slider value="50" disabled></round-slider>
 
-    <h2>Start Angle (<span class="value">50</span>)</h2>
-    <round-slider value="50" rotate="0"></round-slider>
-    <round-slider value="50" rotate="90"></round-slider>
-    <round-slider value="50" rotate="180"></round-slider>
-    <round-slider value="50" rotate="270"></round-slider>
-
-    <h2>Arc Length (<span class="value">50</span>)</h2>
+    <h2>Shapes (<span class="value">50</span>)</h2>
     <round-slider value="50" arc="90" rotate="180"></round-slider>
     <round-slider value="50" arc="180" rotate="180"></round-slider>
     <round-slider value="50" arc="360" rotate="180"></round-slider>
@@ -57,8 +43,7 @@
           .querySelectorAll("span.value")
           .forEach(function (el) {
             el.innerHTML = value;
-            if (active) el.style.color = "red";
-            else el.style.color = "black";
+            el.style.color = active ? "red" : "black";
           });
       };
 
