@@ -64,11 +64,11 @@
 
       document.querySelectorAll("round-slider").forEach(function (el) {
         el.addEventListener("change", function (ev) {
-          setValue(ev.detail.value, false);
+          setValue(ev.target.value, false);
         });
 
         el.addEventListener("input", function (ev) {
-          setValue(ev.detail.value, true);
+          setValue(ev.target.value, true);
         });
       });
     </script>

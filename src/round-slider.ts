@@ -37,6 +37,7 @@ export class RoundSlider extends LitElement {
   public rotate: Degrees = 135;
 
   private isDragging = false;
+  private previousValue = this.value;
 
   constructor() {
     super();
@@ -97,7 +98,7 @@ export class RoundSlider extends LitElement {
   private onRelease = (_event: MouseEvent | TouchEvent): void => {
     if (this.isDragging) {
       this.isDragging = false;
-      this.emit("change");
+      this.mightHaveChanged();
     }
   };
 
@@ -114,6 +115,7 @@ export class RoundSlider extends LitElement {
     if (keys[event.key]) {
       event.preventDefault();
       keys[event.key]();
+      this.mightHaveChanged();
     }
   };
 
@@ -124,14 +126,15 @@ export class RoundSlider extends LitElement {
     }
   }
 
-  private emit(name: string) {
-    const event = new CustomEvent(name, {
-      detail: { value: this.value },
-      bubbles: true,
-      composed: true,
-    });
+  private mightHaveChanged() {
+    if (this.value !== this.previousValue) {
+      this.previousValue = this.value;
+      this.emit("change");
+    }
+  }
 
-    this.dispatchEvent(event);
+  private emit(name: string) {
+    this.dispatchEvent(new CustomEvent(name, { bubbles: true, composed: true }));
   }
 
   protected render() {
