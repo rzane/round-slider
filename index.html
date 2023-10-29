@@ -4,14 +4,29 @@
     <title>Round-slider demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./src/round-slider.ts" type="module"></script>
-  </head>
-  <body style="margin-left: 24px">
     <style>
-      round-slider {
-        max-width: 200px;
-        transition: all 1.3s ease-out 0s;
-        margin: 0 1em;
-        border: 1px solid #eee;
+      body {
+        font-family: "Gill Sans", sans-serif;
+        max-width: 1024px;
+        margin: 0 auto;
+      }
+
+      h3 {
+        margin-top: 48px;
+      }
+
+      .example {
+        position: relative;
+        width: 200px;
+        margin: 0 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .value {
+        position: absolute;
+        font-size: 24px;
       }
 
       .styled {
@@ -24,49 +39,62 @@
       .styled[disabled] {
         --color: #737373;
       }
-
-      .styled::part(track) {}
-      .styled::part(progress) {}
       .styled::part(thumb) {
         stroke-linecap: square;
       }
     </style>
+  </head>
+  <body>
+    <h1>@rzane/round-slider</h1>
 
-    <h2>Default (<span class="value">50</span>)</h2>
-    <round-slider value="50" aria-label="Temperature"></round-slider>
-    <round-slider value="50" disabled></round-slider>
+    <h3>Default</h3>
+    <div class="example">
+      <round-slider value="50"></round-slider>
+      <div class="value">50</div>
+    </div>
 
-    <h2>Styling (<span class="value">50</span>)</h2>
-    <round-slider value="50" class="styled"></round-slider>
-    <round-slider value="50" class="styled" disabled></round-slider>
+    <div class="example">
+      <round-slider value="50" disabled></round-slider>
+      <div class="value">50</div>
+    </div>
 
-    <h2>Shapes (<span class="value">50</span>)</h2>
-    <round-slider value="50" arc="90" rotate="180"></round-slider>
-    <round-slider value="50" arc="180" rotate="180"></round-slider>
-    <round-slider value="50" arc="360" rotate="180"></round-slider>
+    <h3>Styling</h3>
+    <div class="example">
+      <round-slider value="50" class="styled"></round-slider>
+      <div class="value">50</div>
+    </div>
+
+    <div class="example">
+      <round-slider value="50" class="styled" disabled></round-slider>
+      <div class="value">50</div>
+    </div>
+
+    <h3>Shapes</h3>
+    <div class="example">
+      <round-slider value="50" arc="90" rotate="180"></round-slider>
+      <div class="value">50</div>
+    </div>
+
+    <div class="example">
+      <round-slider value="50" arc="180" rotate="180"></round-slider>
+      <div class="value">50</div>
+    </div>
+
+    <div class="example">
+      <round-slider value="50" arc="360" rotate="180"></round-slider>
+      <div class="value">50</div>
+    </div>
 
     <script>
-      const setValue = function (value, active) {
-        document.querySelectorAll("round-slider").forEach(function (el) {
-          if (el.value === undefined) return;
-          el.value = value;
-        });
-        const span = document
-          .querySelectorAll("span.value")
-          .forEach(function (el) {
-            el.innerHTML = value;
-            el.style.color = active ? "red" : "black";
-          });
-      };
+      function setValue(event, active) {
+        const output = event.target.parentElement.querySelector('.value');
+        output.textContent = event.target.value;
+        output.style.color = active ? 'grey' : 'black';
+      }
 
-      document.querySelectorAll("round-slider").forEach(function (el) {
-        el.addEventListener("change", function (ev) {
-          setValue(ev.target.value, false);
-        });
-
-        el.addEventListener("input", function (ev) {
-          setValue(ev.target.value, true);
-        });
+      document.querySelectorAll("round-slider").forEach((el) => {
+        el.addEventListener("input", (event) => setValue(event, true));
+        el.addEventListener("change", (event) => setValue(event, false));
       });
     </script>
   </body>
