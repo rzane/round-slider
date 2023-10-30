@@ -263,14 +263,14 @@ export class RoundSlider extends LitElement {
       stroke-width: var(--thumb-size);
     }
 
-    .thumb:focus {
-      outline: unset;
-    }
-
     .track--slop,
     .thumb--slop {
       stroke: rgba(0, 0, 0, 0);
       stroke-width: var(--slop-size);
+    }
+
+    .thumb--slop:focus {
+      outline: unset;
     }
   `;
 }
