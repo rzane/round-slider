@@ -202,7 +202,7 @@ export class RoundSlider extends LitElement {
             class="thumb"
             part="thumb"
             d=${thumb}
-            tabindex="0"
+            tabindex=${this.disabled ? "-1" : "0"}
             role="slider"
             aria-valuemin=${this.min}
             aria-valuemax=${this.max}
