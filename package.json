@@ -18,6 +18,7 @@
     "build": "tsc && vite build",
     "test": "vitest",
     "format": "prettier . --write",
+    "pages": "vite build --config vite.pages.ts",
     "prepublishOnly": "tsc && vite build"
   },
   "devDependencies": {
