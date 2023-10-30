@@ -192,9 +192,9 @@ export class RoundSlider extends LitElement {
         </g>
 
         <g>
+          <path class="thumb" part="thumb" d=${thumb} />
           <path
-            class="thumb"
-            part="thumb"
+            class="thumb--slop"
             d=${thumb}
             tabindex="0"
             role="slider"
@@ -203,10 +203,6 @@ export class RoundSlider extends LitElement {
             aria-valuenow=${this.value}
             aria-label=${this.ariaLabel}
             aria-disabled=${this.disabled}
-          />
-          <path
-            class="thumb--slop"
-            d=${thumb}
             @mousedown=${this.onPressThumb}
             @touchstart=${this.onPressThumb}
           />
