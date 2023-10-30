@@ -60,10 +60,10 @@ test("getViewBox", () => {
 test("pointToValue", () => {
   const arc = ctx(270, 135);
 
-  expect(pointToValue({ x: 0, y: -78.63333129882812 }, arc)).toEqual(50);
-  expect(pointToValue({ x: -99, y: -16.633331298828125 }, arc)).toEqual(20);
-  expect(pointToValue({ x: -33, y: 106.36666870117188 }, arc)).toEqual(0);
-  expect(pointToValue({ x: 16, y: 79.36666870117188 }, arc)).toEqual(100);
+  expect(pointToValue({ x: 0, y: -78.63333129882812 }, 50, arc)).toEqual(50);
+  expect(pointToValue({ x: -99, y: -16.633331298828125 }, 50, arc)).toEqual(20);
+  expect(pointToValue({ x: -33, y: 106.36666870117188 }, 50, arc)).toEqual(100);
+  expect(pointToValue({ x: 16, y: 79.36666870117188 }, 50, arc)).toEqual(100);
 });
 
 test("renderArc", () => {

@@ -68,15 +68,19 @@ export function mouseEventToPoint(event: MouseEvent | TouchEvent): Point {
   }
 }
 
-export function pointToValue({ x, y }: Point, ctx: Context): number {
+export function pointToValue({ x, y }: Point, currentValue: number, ctx: Context): number {
   const radians = (Math.atan2(y, x) - ctx.rotate + 8 * Math.PI) % (2 * Math.PI);
-  const scaledValue = (radians / ctx.arc) * (ctx.max - ctx.min) + ctx.min;
-  const value = Math.round(scaledValue / ctx.step) * ctx.step;
+  const currentRadians = valueToRadians(currentValue, ctx) - ctx.rotate;
+  const nearMinRadians = ctx.arc * 0.2;
+  const nearMaxRadians = ctx.arc * 0.8;
 
-  if (value > ctx.max) {
-    return radians > Math.PI + ctx.arc / 2 ? ctx.min : ctx.max;
+  if (currentRadians < nearMinRadians && radians > nearMaxRadians) {
+    return ctx.min;
+  } else if (currentRadians > nearMaxRadians && radians < nearMinRadians) {
+    return ctx.max;
   } else {
-    return value;
+    const scaledValue = (radians / ctx.arc) * (ctx.max - ctx.min) + ctx.min;
+    return Math.min(Math.round(scaledValue / ctx.step) * ctx.step, ctx.max);
   }
 }
 
@@ -87,9 +91,8 @@ export function valueToRadians(value: number, ctx: Context): Radians {
 }
 
 export function renderArc(startRadians: Radians, endRadians: Radians): string {
-  const delta = endRadians - startRadians;
   const startPoint = radiansToPoint(startRadians);
   const endPoint = radiansToPoint(endRadians + 0.001);
-  const largeArcFlag = delta > Math.PI ? "1" : "0";
+  const largeArcFlag = endRadians - startRadians > Math.PI ? "1" : "0";
   return `M ${startPoint.x} ${startPoint.y} A 1 1, 0, ${largeArcFlag} 1, ${endPoint.x} ${endPoint.y}`;
 }

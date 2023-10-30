@@ -82,7 +82,7 @@ export class RoundSlider extends LitElement {
     const svg = this.svg.value.getBoundingClientRect();
     const x = mouse.x - (svg.left + (bounds.left * svg.width) / bounds.width);
     const y = mouse.y - (svg.top + (bounds.top * svg.height) / bounds.height);
-    return pointToValue({ x, y }, this.context);
+    return pointToValue({ x, y }, this.value, this.context);
   }
 
   private onPressThumb = (event: TouchEvent | MouseEvent): void => {
