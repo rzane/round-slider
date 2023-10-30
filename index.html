@@ -87,9 +87,9 @@
 
     <script>
       function setValue(event, active) {
-        const output = event.target.parentElement.querySelector('.value');
+        const output = event.target.parentElement.querySelector(".value");
         output.textContent = event.target.value;
-        output.style.color = active ? 'grey' : 'black';
+        output.style.color = active ? "grey" : "black";
       }
 
       document.querySelectorAll("round-slider").forEach((el) => {

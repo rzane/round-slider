@@ -30,10 +30,12 @@ export function radiansToPoint(radians: Radians): Point {
 }
 
 function isAngleOnArc(degrees: Degrees, ctx: Context): boolean {
-  const radians = degreesToRadians(degrees)
+  const radians = degreesToRadians(degrees);
   const epsilon = 1e-10;
   const middle = ctx.arc / 2;
-  const delta = ((ctx.rotate + middle - radians + Math.PI + 2 * Math.PI) % (2 * Math.PI)) - Math.PI;
+  const delta =
+    ((ctx.rotate + middle - radians + Math.PI + 2 * Math.PI) % (2 * Math.PI)) -
+    Math.PI;
   return Math.abs(delta) <= middle + epsilon;
 }
 
@@ -80,7 +82,7 @@ export function pointToValue({ x, y }: Point, ctx: Context): number {
 
 export function valueToRadians(value: number, ctx: Context): Radians {
   const clampedValue = Math.min(ctx.max, Math.max(ctx.min, value));
-  const fraction = ((clampedValue - ctx.min) / (ctx.max - ctx.min));
+  const fraction = (clampedValue - ctx.min) / (ctx.max - ctx.min);
   return ctx.rotate + fraction * ctx.arc;
 }
 
