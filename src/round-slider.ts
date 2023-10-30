@@ -192,9 +192,10 @@ export class RoundSlider extends LitElement {
         </g>
 
         <g>
-          <path class="thumb" part="thumb" d=${thumb} />
+          <path class="thumb--slop" d=${thumb} />
           <path
-            class="thumb--slop"
+            class="thumb"
+            part="thumb"
             d=${thumb}
             tabindex="0"
             role="slider"
@@ -263,14 +264,15 @@ export class RoundSlider extends LitElement {
       stroke-width: var(--thumb-size);
     }
 
+    .thumb:focus {
+      outline: unset;
+      stroke: #0545bc;
+    }
+
     .track--slop,
     .thumb--slop {
       stroke: rgba(0, 0, 0, 0);
       stroke-width: var(--slop-size);
-    }
-
-    .thumb--slop:focus {
-      outline: unset;
     }
   `;
 }
