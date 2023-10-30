@@ -8,10 +8,6 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
 
-    /* JSX */
-    "jsx": "react-jsx",
-    "jsxImportSource": "atomico",
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
