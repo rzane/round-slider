@@ -2,6 +2,7 @@
   "name": "@rzane/round-slider",
   "version": "0.1.0",
   "type": "module",
+  "license": "MIT",
   "files": [
     "dist"
   ],
@@ -12,6 +13,10 @@
     "types": "./dist/round-slider.d.ts",
     "import": "./dist/round-slider.js",
     "require": "./dist/round-slider.umd.cjs"
+  },
+  "repository": {
+    "url": "https://github.com/rzane/round-slider.git",
+    "type": "git"
   },
   "scripts": {
     "dev": "vite",
