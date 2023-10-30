@@ -17,6 +17,11 @@ import {
 
 @customElement("round-slider")
 export class RoundSlider extends LitElement {
+  static shadowRootOptions = {
+    ...LitElement.shadowRootOptions,
+    delegatesFocus: true
+  };
+
   @property({ type: Number })
   public value: number = 0;
 
