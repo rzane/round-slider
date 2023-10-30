@@ -236,6 +236,7 @@ export class RoundSlider extends LitElement {
 
     :host([disabled]) {
       --color: #bfbfbf;
+      pointer-events: none;
     }
 
     svg {
