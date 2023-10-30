@@ -2,6 +2,8 @@
 
 This is a circular range input implemented as a web component.
 
+[View the demo](https://rzane.github.io/round-slider/)
+
 ## Properties
 
 - `value` - The value of the slider
